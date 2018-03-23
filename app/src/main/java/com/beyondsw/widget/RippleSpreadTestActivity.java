@@ -36,9 +36,7 @@ public class RippleSpreadTestActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!whenView.isStarting()) {
-                    whenView.start();
-                }
+                whenView.start();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

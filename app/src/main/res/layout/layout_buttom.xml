@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layout_marginBottom="20dp"
+    android:gravity="center"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <ImageView
+        android:id="@+id/iv_dislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_todayfate_dislike" />
+
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/iv_follow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_todayfate_follow" />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/iv_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_todayfate_like" />
+
+
+</LinearLayout>
+

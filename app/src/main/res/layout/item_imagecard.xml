@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/card_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="-1dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/viewLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/viewRight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent" />
+            </LinearLayout>
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="7dp" />
+        </FrameLayout>
+
+        <include layout="@layout/layout_alpha_table" />
+
+        <TextView
+            android:id="@+id/tv_pic_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginStart="13dp"
+            android:gravity="center"
+            android:text="99张说说"
+            android:textColor="@android:color/black"
+            android:textSize="14dp" />
+
+        <View
+            android:id="@+id/tv_line1"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/tv_pic_num"
+            android:layout_alignParentBottom="true"
+            android:layout_alignTop="@+id/tv_pic_num"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@+id/tv_pic_num"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_follow_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginStart="13dp"
+            android:layout_toRightOf="@+id/tv_line1"
+            android:gravity="center"
+            android:text="关注99"
+            android:textColor="@android:color/black"
+            android:textSize="14dp" />
+
+        <View
+            android:id="@+id/tv_line2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/tv_pic_num"
+            android:layout_alignParentBottom="true"
+            android:layout_alignTop="@+id/tv_pic_num"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@+id/tv_follow_num"
+            android:layout_toRightOf="@+id/tv_follow_num"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_fans_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginStart="13dp"
+            android:layout_toEndOf="@+id/tv_line2"
+            android:layout_toRightOf="@+id/tv_line2"
+            android:gravity="center"
+            android:text="粉丝99"
+            android:textColor="@android:color/black"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_pic_num"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp"
+
+            android:gravity="center"
+            android:text="我是昵称"
+            android:textColor="@android:color/black"
+            android:textSize="25dp" />
+
+        <com.beyondsw.widget.IconPageIndicator
+            android:id="@+id/iconPageIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="5dp" />
+
+
+    </RelativeLayout>
+
+</FrameLayout>

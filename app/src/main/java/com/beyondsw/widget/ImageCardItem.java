@@ -1,20 +1,23 @@
 package com.beyondsw.widget;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import static com.beyondsw.widget.CardFragment.OPTION_IMAGE;
 
 
 abstract class ImageCardItem extends BaseCardItem {
-    private static final String TAG = "ImageCardItem";
-    private String[] adatar;
+    private int[] avatar;
+    private int currentTab = 0;
 
-    ImageCardItem(Context context, String url, String[] adatar) {
+    ImageCardItem(Context context, int[] avatar) {
         super(context);
-        this.adatar = adatar;
+        this.avatar = avatar;
     }
 
     static class ViewHolder {
@@ -24,22 +27,23 @@ abstract class ImageCardItem extends BaseCardItem {
         ImageView down;
     }
 
-    private int currentTab = 0;
-
     @Override
     public View getView(View convertView, ViewGroup parent) {
         convertView = View.inflate(mContext, R.layout.item_imagecard, null);
-        final ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
-        final IconPageIndicator iconPageIndicator = (IconPageIndicator) convertView.findViewById(R.id.iconPageIndicator);
-        iconPageIndicator.setCurrentCount(adatar.length);
+        final ImageView imageView = convertView.findViewById(R.id.image);
+        final IconPageIndicator iconPageIndicator = convertView.findViewById(R.id.iconPageIndicator);
+        iconPageIndicator.setCurrentCount(avatar.length);
         iconPageIndicator.setCurrentItem(currentTab);
-        ImageView left = (ImageView) convertView.findViewById(R.id.left);
-        ImageView right = (ImageView) convertView.findViewById(R.id.right);
-        ImageView up = (ImageView) convertView.findViewById(R.id.up);
-        ImageView down = (ImageView) convertView.findViewById(R.id.down);
+        ImageView left = convertView.findViewById(R.id.left);
+        ImageView right = convertView.findViewById(R.id.right);
+        ImageView up = convertView.findViewById(R.id.up);
+        ImageView down = convertView.findViewById(R.id.down);
+        // 这里指定了被共享的视图元素
+        ViewCompat.setTransitionName(imageView, "image");
+        View viewLeft = convertView.findViewById(R.id.viewLeft);
+        View viewRight = convertView.findViewById(R.id.viewRight);
 
-        View viewLeft = (View) convertView.findViewById(R.id.viewLeft);
-        View viewRight = (View) convertView.findViewById(R.id.viewRight);
+        ImageView iv_up=convertView.findViewById(R.id.iv_up);
 
         ViewHolder vh = new ViewHolder();
         vh.left = left;
@@ -51,7 +55,7 @@ abstract class ImageCardItem extends BaseCardItem {
         viewRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentTab == adatar.length - 1) {
+                if (currentTab == avatar.length - 1) {
                     onEndAnim();
                 } else {
                     currentTab++;
@@ -74,16 +78,28 @@ abstract class ImageCardItem extends BaseCardItem {
                 }
             }
         });
+        iv_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTransitionShrink(imageView,currentTab);
+            }
+        });
         return convertView;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void loadAvatar(ImageView imageView) {
-        Glide.with(mContext)
-                .load(adatar[currentTab])
-                .placeholder(R.drawable.img_dft)
-                .centerCrop()
-                .into(imageView);
+//        Glide.with(mContext)
+//                .load(adatar[currentTab])
+//                .placeholder(R.drawable.img_dft)
+//                .centerCrop()
+//                .into(imageView);
+        imageView.setTransitionName(OPTION_IMAGE+currentTab);
+        imageView.setImageResource(avatar[currentTab]);
     }
 
     abstract void onEndAnim();
+
+    //转场收缩
+    abstract void onTransitionShrink(View view,int currentTab);
 }

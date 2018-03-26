@@ -3,13 +3,15 @@ package com.beyondsw.widget;
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,7 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
     private ImageView iv_like;
     private ImageView iv_follow;
 
-    private ImageView iv_up;
+
 
 
     @Nullable
@@ -50,15 +52,15 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_taday_fate, null);
 
-        iv_dislike = (ImageView) root.findViewById(R.id.iv_dislike);
-        iv_like = (ImageView) root.findViewById(R.id.iv_like);
-        iv_follow = (ImageView) root.findViewById(R.id.iv_follow);
-        iv_up = (ImageView) root.findViewById(R.id.iv_up);
+        iv_dislike = root.findViewById(R.id.iv_dislike);
+        iv_like = root.findViewById(R.id.iv_like);
+        iv_follow = root.findViewById(R.id.iv_follow);
+
         iv_dislike.setOnClickListener(this);
         iv_like.setOnClickListener(this);
         iv_follow.setOnClickListener(this);
-        iv_up.setOnClickListener(this);
-        mCardsView = (StackCardsView) root.findViewById(R.id.cards);
+
+        mCardsView = root.findViewById(R.id.cards);
         mCardsView.addOnCardSwipedListener(this);
         mAdapter = new CardAdapter();
         mCardsView.setAdapter(mAdapter);
@@ -71,11 +73,7 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
         return root;
     }
 
-    private void startEndAdmin() {
-        ObjectAnimator animator = tada(mCardsView);
-        animator.setRepeatCount(0);
-        animator.start();
-    }
+
 
     @Override
     public void onDestroyView() {
@@ -96,8 +94,6 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
             mCardsView.removeCover(StackCardsView.SWIPE_RIGHT);
         } else if (v == iv_follow) {
             mCardsView.removeCover(StackCardsView.SWIPE_UP);
-        }else  if(v==iv_up){
-
         }
     }
 
@@ -190,10 +186,15 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
             final int endIndex = Math.min(mStartIndex + PAGE_COUNT, ImageUrls.images.length - 1);
             List<BaseCardItem> result = new ArrayList<>(endIndex - startIndex + 1);
             for (int i = startIndex; i <= endIndex; i++) {
-                ImageCardItem item = new ImageCardItem(getActivity(), ImageUrls.images[i],ImageUrls.images2) {
+                ImageCardItem item = new ImageCardItem(getActivity(),ImageUrls.images3) {
                     @Override
                     void onEndAnim() {
                         startEndAdmin();
+                    }
+
+                    @Override
+                    void onTransitionShrink(View view,int currentTab) {
+                        startTransitionShrink(view,currentTab);
                     }
                 };
                 item.dismissDir = StackCardsView.SWIPE_ALL;
@@ -204,6 +205,12 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
         }
         return null;
     }
+    private void startEndAdmin() {
+        ObjectAnimator animator = tada(mCardsView);
+        animator.setRepeatCount(0);
+        animator.start();
+    }
+
 
     public static ObjectAnimator tada(View view) {
         return tada(view, 1f);
@@ -228,5 +235,17 @@ public class CardFragment extends Fragment implements Handler.Callback, StackCar
         return ObjectAnimator.ofPropertyValuesHolder(view, pvhRotate).
                 setDuration(1000);
     }
+    public static final String OPTION_IMAGE = "image";
+    private void startTransitionShrink( View transitionView,int currentTab){
+        Intent intent=new Intent(getActivity(),TodayDetailsActivity.class);
+        intent.putExtra("currentTab",currentTab);
+        startActivity(intent);
+       getActivity(). overridePendingTransition(0,0);
+        // 这里指定了共享的视图元素
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), transitionView, OPTION_IMAGE+currentTab);
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+    }
+
+
 
 }

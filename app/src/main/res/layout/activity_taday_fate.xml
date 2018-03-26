@@ -18,15 +18,4 @@
         app:edgeHeight="0dp"
         app:scaleFactor="1" />
 
-    <ImageView
-        android:id="@+id/iv_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="125dp"
-        android:layout_marginRight="28dp"
-        android:src="@mipmap/ic_todayfate_up" />
-
-
 </RelativeLayout>

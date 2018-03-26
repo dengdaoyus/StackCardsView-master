@@ -36,6 +36,7 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/image"
+                android:src="@drawable/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
@@ -124,7 +125,6 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="13dp"
             android:layout_marginStart="13dp"
-
             android:gravity="center"
             android:text="我是昵称"
             android:textColor="@android:color/black"
@@ -140,6 +140,16 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="5dp" />
 
+        <ImageView
+            android:id="@+id/iv_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="13dp"
+            android:src="@mipmap/ic_todayfate_up"
+            android:contentDescription="" />
 
     </RelativeLayout>
 

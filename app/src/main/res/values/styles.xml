@@ -6,6 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="TodayStyle" parent="android:Theme.Material">
+
+        <item name="android:windowContentTransitions">true</item>
     </style>
    
 </resources>

@@ -1,7 +1,6 @@
 package com.beyondsw.widget;
 
 /**
- *
  * Created by wensefu on 2017/2/12.
  */
 
@@ -44,6 +43,12 @@ public class ImageUrls {
             "http://p3.so.qhmsg.com/bdr/_240_/t015740f16ee59006b8.jpg",
             "http://p1.so.qhmsg.com/bdr/_240_/t01c950774ac6eb84f6.jpg",
             "http://p1.so.qhimgs1.com/bdr/_240_/t015d89a2e1c9a69f51.jpg"
+    };
+    public static final int[] images3 = {
+            R.drawable.ic_test_0, R.drawable.ic_test_1,
+            R.drawable.ic_test_2, R.drawable.ic_test_3,
+            R.drawable.ic_test_4, R.drawable.ic_test_5,
+            R.drawable.ic_test_6
     };
 
     public static final String[] labels;

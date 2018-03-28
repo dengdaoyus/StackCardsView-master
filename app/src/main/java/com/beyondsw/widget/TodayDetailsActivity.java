@@ -1,14 +1,17 @@
 package com.beyondsw.widget;
 
 import android.app.SharedElementCallback;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -24,18 +27,19 @@ import butterknife.ButterKnife;
 import static com.beyondsw.widget.CardFragment.OPTION_IMAGE;
 
 /**
+ *
  * Created by Administrator on 2018/3/26 0026.
  */
 
 public class TodayDetailsActivity extends AppCompatActivity {
-
+    private Handler mHandler = new Handler();
     private List<Integer> mList = new ArrayList<>();
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner<Integer> convenientBanner;
     private int mCurrentPosition = 0, mStartPosition = 0;
-
     private static final String STATE_CURRENT_PAGE_POSITION = "state_current_page_position";
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -43,8 +47,10 @@ public class TodayDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_details);
         ButterKnife.bind(this);
-        postponeEnterTransition();
-        setEnterSharedElementCallback(mCallback);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            postponeEnterTransition();
+        }
+
         initData();
         mStartPosition = getIntent().getIntExtra("currentTab", 0);
         if (savedInstanceState == null) {
@@ -62,25 +68,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
         outState.putInt(STATE_CURRENT_PAGE_POSITION, mCurrentPosition);
     }
 
-    private ImageView mImageView;
-    SharedElementCallback mCallback = new SharedElementCallback() {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-
-                if (mImageView == null) {
-                    names.clear();
-                    sharedElements.clear();
-                } else if (mStartPosition != mCurrentPosition) {
-                    names.clear();
-                    names.add(mImageView.getTransitionName());
-                    sharedElements.clear();
-                    sharedElements.put(mImageView.getTransitionName(), mImageView);
-                }
-        }
-
-    };
-
     private void initData() {
         for (int i = 0; i < ImageUrls.images3.length; i++) {
             mList.add(ImageUrls.images3[i]);
@@ -88,6 +75,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
     }
 
     private void initBanner() {
+
         //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
@@ -96,13 +84,19 @@ public class TodayDetailsActivity extends AppCompatActivity {
                         return new LocalImageHolderView() {
                             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                             @Override
-                            void loadImage(ImageView imageView, int position, Integer data) {
-                                mImageView=imageView;
+                            void loadImage(final ImageView imageView, int position, Integer data) {
                                 imageView.setImageResource(data);
-                                imageView.setTransitionName(OPTION_IMAGE+position);
-                                if (mCurrentPosition == position) {
-                                    startPostponedEnterTransition();
+                                imageView.setTransitionName(OPTION_IMAGE + position);
+                                if (mStartPosition == position) {
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            setStartPostTransition(imageView);
+                                        }
+                                    }, 200);
+
                                 }
+
                             }
                         };
                     }
@@ -121,8 +115,15 @@ public class TodayDetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
+                setResult(100, new Intent().putExtra("currentTab", mCurrentPosition));
             }
         });
+    }
+
+    // @TargetApi(21)
+    private void setStartPostTransition(final View sharedView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            startPostponedEnterTransition();
     }
 
     @Override
@@ -135,7 +136,35 @@ public class TodayDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (convenientBanner != null)
+        stopBanner();
+    }
+    private void stopBanner(){
+        if (convenientBanner != null&&convenientBanner.isTurning())
             convenientBanner.stopTurning();
     }
+
+    @Override
+    public void finishAfterTransition() {
+        stopBanner();
+        setResult(100, new Intent().putExtra("currentTab", mCurrentPosition));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterSharedElementCallback(mCallback);
+        }
+        super.finishAfterTransition();
+    }
+
+    private SharedElementCallback mCallback = new SharedElementCallback() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            ImageView mImageView = (ImageView) convenientBanner.getViewPager().getAdapter().instantiateItem(convenientBanner.getViewPager(), convenientBanner.getCurrentItem());
+            if (mImageView != null && mStartPosition != mCurrentPosition) {
+                names.clear();
+                names.add(mImageView.getTransitionName());
+                sharedElements.clear();
+                sharedElements.put(mImageView.getTransitionName(), mImageView);
+            }
+        }
+    };
+
 }

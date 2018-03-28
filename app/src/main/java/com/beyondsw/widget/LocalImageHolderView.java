@@ -27,11 +27,6 @@ abstract class LocalImageHolderView implements Holder<Integer> {
     @Override
     public void UpdateUI(Context context, int position, Integer data) {
         loadImage(imageView,position,data);
-//        Glide.with(context)
-//                .load(data)
-//                .placeholder(R.drawable.img_dft)
-//                .centerCrop()
-//                .into(imageView);
     }
     abstract void loadImage(ImageView imageView, int position, Integer data);
 }

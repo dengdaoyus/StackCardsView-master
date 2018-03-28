@@ -46,10 +46,72 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="25dp"
-                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd fhakld fkladhf kladj fkla df"
+                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkj1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajddfh lakjd fklajd fhakld fkladhf kladj fkla df"
                 android:textColor="#333333"
                 android:textSize="25dp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkj1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajddfh lakjd fklajd fhakld fkladhf kladj fkla df"
+                android:textColor="#333333"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkj1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajddfh lakjd fklajd fhakld fkladhf kladj fkla df"
+                android:textColor="#333333"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkj1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajddfh lakjd fklajd fhakld fkladhf kladj fkla df"
+                android:textColor="#333333"
+                android:textSize="25dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkj1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajddfh lakjd fklajd fhakld fkladhf kladj fkla df"
+                android:textColor="#333333"
+                android:textSize="25dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="111adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkj1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajd1adkljfhlakdhf alkdjfh alkdjfh alkdjfh alkjdf halkjdfh lakjd fklajddfh lakjd fklajd fhakld fkladhf kladj fkla df"
+                android:textColor="#333333"
+                android:textSize="25dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

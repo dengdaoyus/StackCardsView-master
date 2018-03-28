@@ -3,7 +3,7 @@ package com.beyondsw.lib.widget;
 import android.view.MotionEvent;
 
 /**
- * Created by wensefu on 17-2-12.
+ * Created by
  */
 public interface ISwipeTouchHelper {
 

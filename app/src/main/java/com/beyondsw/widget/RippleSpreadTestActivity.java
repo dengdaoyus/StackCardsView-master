@@ -40,7 +40,7 @@ public class RippleSpreadTestActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(RippleSpreadTestActivity.this, DemoActivity.class));
+                        startActivity(new Intent(RippleSpreadTestActivity.this, CardFragment.class));
                     }
                 }, 3000);
             }

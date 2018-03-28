@@ -13,24 +13,40 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DemoActivity"
+            android:name=".CardFragment"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".RippleSpreadTestActivity"
             android:screenOrientation="portrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".TodayDetailsActivity"
+            android:theme="@style/AppTheme.Detail"
             android:screenOrientation="portrait" />
 
+
+
+        <activity android:name="uitransition.MainActivity">
+
+        </activity>
+
+        <activity
+            android:name="uitransition.ui_trasition.ImageActivity"
+            android:theme="@style/AppTheme.Main"/>
+        <activity
+            android:name="uitransition.ui_trasition.DetailActivity"
+            android:theme="@style/AppTheme.Detail"/>
+
+        <activity android:name="uitransition.manual_transition.AnimeActivity"/>
+        <activity
+            android:name="uitransition.manual_transition.AnimeDetailActivity"
+            android:theme="@style/AppTheme.AnimeDetail"/>
     </application>
 
 </manifest>

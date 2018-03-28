@@ -6,12 +6,25 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
-    <style name="TodayStyle" parent="android:Theme.Material">
 
-        <item name="android:windowContentTransitions">true</item>
+    <style name="AppTheme.Main">
+        <item name="windowActionBar">false</item>
     </style>
-   
+
+    <style name="AppTheme.AnimeDetail">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="ImageViewStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="layout_rowWeight">1</item>
+        <item name="layout_columnWeight">1</item>
+        <item name="android:onClick">imageClick</item>
+    </style>
+
 </resources>

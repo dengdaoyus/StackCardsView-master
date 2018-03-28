@@ -115,7 +115,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
-                setResult(100, new Intent().putExtra("currentTab", mCurrentPosition));
+//                setResult(100, new Intent().putExtra("currentTab", mCurrentPosition));
             }
         });
     }

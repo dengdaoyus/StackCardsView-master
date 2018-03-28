@@ -34,14 +34,14 @@
                     android:background="@android:color/transparent" />
             </LinearLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.beyondsw.widget.RoundImageView
                 android:id="@+id/image"
                 android:src="@drawable/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                app:riv_corner_radius="7dp" />
+                />
         </FrameLayout>
 
         <include layout="@layout/layout_alpha_table" />

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import uitransition.MainActivity;
+
 /**
  * Created by
  */
@@ -92,6 +94,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
             mCardsView.removeCover(StackCardsView.SWIPE_RIGHT);
         } else if (v == iv_follow) {
             mCardsView.removeCover(StackCardsView.SWIPE_UP);
+            startActivity(new Intent(this, MainActivity.class));
         }
 
     }
@@ -100,17 +103,17 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     @Override
     public void onCardDismiss(int direction) {
         mAdapter.remove(0);
-        switch (direction) {
-            case StackCardsView.SWIPE_LEFT:
-                TodayFateAdminUtils.startEndAdmin(iv_dislike);
-                break;
-            case StackCardsView.SWIPE_RIGHT:
-                TodayFateAdminUtils.startEndAdmin(iv_like);
-                break;
-            case StackCardsView.SWIPE_UP:
-                TodayFateAdminUtils.startEndAdmin(iv_follow);
-                break;
-        }
+//        switch (direction) {
+//            case StackCardsView.SWIPE_LEFT:
+//                TodayFateAdminUtils.startEndAdmin(iv_dislike);
+//                break;
+//            case StackCardsView.SWIPE_RIGHT:
+//                TodayFateAdminUtils.startEndAdmin(iv_like);
+//                break;
+//            case StackCardsView.SWIPE_UP:
+//                TodayFateAdminUtils.startEndAdmin(iv_follow);
+//                break;
+//        }
         if (mAdapter.getCount() < 3) {
             if (!mWorkHandler.hasMessages(MSG_START_LOAD_DATA)) {
                 mWorkHandler.obtainMessage(MSG_START_LOAD_DATA).sendToTarget();

@@ -2,10 +2,12 @@ package com.beyondsw.widget;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.ViewCompat;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import static com.beyondsw.widget.CardFragment.OPTION_IMAGE;
 
@@ -26,13 +28,14 @@ abstract class ImageCardItem extends BaseCardItem {
         ImageView down;
     }
 
-    ImageView imageView;
+    RoundImageView imageView;
     IconPageIndicator iconPageIndicator;
 
     @Override
     public View getView(View convertView, ViewGroup parent) {
         convertView = View.inflate(mContext, R.layout.item_imagecard, null);
         imageView = convertView.findViewById(R.id.image);
+        imageView.setCurrRound(10);
         iconPageIndicator = convertView.findViewById(R.id.iconPageIndicator);
         iconPageIndicator.setCurrentCount(avatar.length);
         iconPageIndicator.setCurrentItem(currentTab);
@@ -93,12 +96,12 @@ abstract class ImageCardItem extends BaseCardItem {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setTransitionName(OPTION_IMAGE + currentTab);
         }
-        imageView.setImageResource(avatar[currentTab]);
-        //        Glide.with(mContext)
-//                .load(adatar[currentTab])
-//                .placeholder(R.drawable.img_dft)
-//                .centerCrop()
-//                .into(imageView);
+//        imageView.setImageResource(avatar[currentTab]);
+                Glide.with(mContext)
+                .load(avatar[currentTab])
+                .placeholder(R.drawable.img_dft)
+                .centerCrop()
+                .into(imageView);
     }
 
     void setCurrentTab(int currentTab) {

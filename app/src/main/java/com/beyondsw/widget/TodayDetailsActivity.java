@@ -40,8 +40,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
     private int mCurrentPosition = 0, mStartPosition = 0;
     private static final String STATE_CURRENT_PAGE_POSITION = "state_current_page_position";
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +48,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             postponeEnterTransition();
         }
-
         initData();
         mStartPosition = getIntent().getIntExtra("currentTab", 0);
         if (savedInstanceState == null) {

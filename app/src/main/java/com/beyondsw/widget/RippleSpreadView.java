@@ -51,14 +51,13 @@ public class RippleSpreadView extends View {
 
     private void initView(AttributeSet attrs) {
         linearInterpolator = new LinearInterpolator();
-
         outSpreadValue = 1.2F;
         Context context = getContext();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleSpreadView);
-        innerColor = typedArray.getColor(R.styleable.RippleSpreadView_rsv_innerCircleColor, Color.parseColor("#E0E0E0"));
+        innerColor = typedArray.getColor(R.styleable.RippleSpreadView_rsv_innerCircleColor, Color.parseColor("#DBDBFF"));
         innerSize = typedArray.getDimension(R.styleable.RippleSpreadView_rsv_innerSize, 20F);
         innerAnimDuration = typedArray.getInt(R.styleable.RippleSpreadView_rsv_innerAnimDuration, 500);
-        outColor = typedArray.getColor(R.styleable.RippleSpreadView_rsv_outCircleColor, Color.parseColor("#8BC34A"));
+        outColor = typedArray.getColor(R.styleable.RippleSpreadView_rsv_outCircleColor, Color.parseColor("#DBDBFF"));
         outSize = typedArray.getDimension(R.styleable.RippleSpreadView_rsv_outSize, 24F);
         outAnimDuration = typedArray.getInt(R.styleable.RippleSpreadView_rsv_outAnimDuration, 700);
         typedArray.recycle();
@@ -159,16 +158,40 @@ public class RippleSpreadView extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        innerSizeAnimator.start();
+        outSizeAnimator.start();
+        isStarting=true;
+    }
+
+    public void startAdmin() {
         try {
-            if (innerSizeAnimator != null) {
-                innerSizeAnimator.start();
-            }
-            if (outSizeAnimator != null) {
-                outSizeAnimator.start();
-            }
+            isStarting=true;
+            innerSizeAnimator.start();
+            outSizeAnimator.start();
+            outSizeXAnimator.start();
+            outSizeXXAnimator.start();
+            outSizeXXXAnimator.start();
         } catch (Exception e) {
 
         }
+    }
+
+    public void stopAdmin() {
+        try {
+            innerSizeAnimator.pause();
+            outSizeAnimator.pause();
+            outSizeXAnimator.pause();
+            outSizeXXAnimator.pause();
+            outSizeXXXAnimator.pause();
+            isStarting=false;
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    public boolean isAdmin() {
+          return isStarting;
     }
 
     /**
@@ -225,4 +248,6 @@ public class RippleSpreadView extends View {
     private float dp2Px(float dp) {
         return dp * getContext().getResources().getDisplayMetrics().density;
     }
+    // 是否运行
+    private boolean isStarting = false;
 }

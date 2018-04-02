@@ -201,6 +201,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
         if (startIndex < ImageUrls.images.length) {
             final int endIndex = Math.min(mStartIndex + PAGE_COUNT, ImageUrls.images.length - 1);
             List<BaseCardItem> result = new ArrayList<>(endIndex - startIndex + 1);
+            List<BaseCardItem> results= new ArrayList<>();
             for (int i = startIndex; i <= endIndex; i++) {
                 ImageCardItem item = new ImageCardItem(this, ImageUrls.images3) {
                     @Override

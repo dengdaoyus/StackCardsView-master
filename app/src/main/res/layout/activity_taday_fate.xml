@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingBottom="100dp"
+        android:paddingTop="16dp"
         app:edgeHeight="0dp"
         app:scaleFactor="1" />
 

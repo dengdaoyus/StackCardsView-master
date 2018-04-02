@@ -6,9 +6,11 @@
 
 
     <RelativeLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_gravity="center"
+        android:visibility="visible">
 
         <com.beyondsw.widget.RippleSpreadView xmlns:RippleWaveView="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rippleSpreadView"
@@ -16,8 +18,9 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_gravity="bottom|center_horizontal"
-            RippleWaveView:rsv_innerAnimDuration="3000"
-            RippleWaveView:rsv_innerCircleColor="#7E57C2"
+            RippleWaveView:rsv_innerAnimDuration="1000"
+            RippleWaveView:rsv_innerCircleColor="#DBDBFF"
+            RippleWaveView:rsv_outCircleColor="#DBDBFF"
             RippleWaveView:rsv_innerSize="1dp"
             RippleWaveView:rsv_outAnimDuration="3000"
             RippleWaveView:rsv_outSize="240dp" />
@@ -31,34 +34,54 @@
             app:riv_oval="true" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <!--<RelativeLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:visibility="visible">-->
 
-        <com.beyondsw.widget.WhewView
-            android:id="@+id/whenView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center" />
+    <!--<com.beyondsw.widget.WhewView-->
+    <!--android:id="@+id/whenView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_gravity="center" />-->
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:layout_width="114dp"
-            android:layout_height="114dp"
-            app:riv_border_width="1dp"
-            app:riv_border_color="@android:color/black"
-            android:layout_centerInParent="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img"
-            app:riv_oval="true"
-            android:id="@+id/roundedImageView" />
+    <!--<com.makeramen.roundedimageview.RoundedImageView-->
+    <!--android:id="@+id/roundedImageView"-->
+    <!--android:layout_width="114dp"-->
+    <!--android:layout_height="114dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:src="@drawable/img"-->
+    <!--app:riv_border_color="@android:color/black"-->
+    <!--app:riv_border_width="1dp"-->
+    <!--app:riv_oval="true" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
+
+    <!--<com.beyondsw.widget.ZhifubaoFrameLayout-->
+    <!--android:id="@+id/zhifubaoFrameLayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<com.makeramen.roundedimageview.RoundedImageView-->
+    <!--android:id="@+id/roundedImageView"-->
+    <!--android:layout_width="114dp"-->
+    <!--android:layout_height="114dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:src="@drawable/img"-->
+    <!--app:riv_border_color="@android:color/black"-->
+    <!--app:riv_border_width="1dp"-->
+    <!--app:riv_oval="true" />-->
+    <!--</com.beyondsw.widget.ZhifubaoFrameLayout>-->
 
     <Button
-        android:layout_gravity="center_horizontal|bottom"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
         android:text="Button" />
 </FrameLayout>

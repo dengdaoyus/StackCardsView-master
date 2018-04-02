@@ -72,12 +72,23 @@ public class WhewView extends View {
             startWidthList.add("0");
         }
         // 同心圆数量达到10个，删除最外层圆
-        if (isStarting && startWidthList.size() == 10) {
+        if (isStarting && startWidthList.size() == 3) {
             startWidthList.remove(0);
             alphaList.remove(0);
         }
         // 刷新界面
         invalidate();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        isStarting=true;
+    }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        isStarting=false;
     }
 
     // 执行动画

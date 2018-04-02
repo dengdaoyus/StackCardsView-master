@@ -387,7 +387,7 @@ public class StackCardsView extends FrameLayout {
     }
 
     private LayoutParams buildLayoutParams(Adapter adapter, int position) {
-        return new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER)
+        return new LayoutParams(DisplayUtils.getScreenWidth(getContext())-DisplayUtils.dip2px(getContext(),16), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER)
                 .swipeDirection(adapter.getSwipeDirection(position))
                 .dismissDirection(adapter.getDismissDirection(position))
                 .fastDismissAllowed(adapter.isFastDismissAllowed(position))

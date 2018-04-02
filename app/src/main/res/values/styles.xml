@@ -26,5 +26,17 @@
         <item name="layout_columnWeight">1</item>
         <item name="android:onClick">imageClick</item>
     </style>
+    <!-- Base application theme. -->
+    <style name="AppThemeBar" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
 
+    <style name="AppTheme.TodayFateDetails">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 </resources>

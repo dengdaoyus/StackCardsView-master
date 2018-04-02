@@ -48,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
         int imageResId = getIntent().getExtras().getInt(EXTRA_IMAGE);
         mImageView = (ImageView) findViewById(R.id.image);
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fabbtn);
+
         mImageView.setImageResource(imageResId);
 
         if (savedInstanceState == null) {

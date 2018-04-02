@@ -5,16 +5,22 @@
         <item name="android:windowExitTransition">@transition/main_exit</item>
     </style>
 
-    <style name="TodayStyle" parent="AppTheme">
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowContentTransitions">true</item>
-    </style>
-
     <style name="AppTheme.Detail">
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
         <item name="android:windowEnterTransition">@transition/detail_enter</item>
+    </style>
+
+    <style name="AppTheme.TodayFateDetails">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowEnterTransition">@transition/detail_enter</item>
+
     </style>
 </resources>

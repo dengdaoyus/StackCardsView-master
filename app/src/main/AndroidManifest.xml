@@ -24,6 +24,7 @@
         <activity
             android:name=".RippleSpreadTestActivity"
             android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".TodayDetailsActivity"
@@ -47,6 +48,13 @@
         <activity
             android:name="uitransition.manual_transition.AnimeDetailActivity"
             android:theme="@style/AppTheme.AnimeDetail"/>
+
+        <activity
+            android:name="uitransition.TestActivity"
+            android:theme="@style/AppTheme.TodayFateDetails">
+
+
+        </activity>
     </application>
 
 </manifest>

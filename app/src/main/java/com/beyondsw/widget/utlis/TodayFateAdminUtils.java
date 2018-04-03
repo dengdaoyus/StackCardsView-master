@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.utlis;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
@@ -15,7 +15,7 @@ public class TodayFateAdminUtils {
 
     private static ObjectAnimator animator = null;
 
-    static void startEndAdmin(View view) {
+    public static void startEndAdmin(View view) {
         if (animator == null) animator = tada(view);
         if (animator.isRunning()) return;
         animator.setRepeatCount(0);

@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.view;
 
 import android.content.Context;
 import android.os.Build;
@@ -12,7 +12,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
  * Created by Administrator on 2018/3/26 0026.
  */
 
-abstract class LocalImageHolderView implements Holder<Integer> {
+public abstract class LocalImageHolderView implements Holder<Integer> {
     private ImageView imageView;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -28,5 +28,5 @@ abstract class LocalImageHolderView implements Holder<Integer> {
     public void UpdateUI(Context context, int position, Integer data) {
         loadImage(imageView,position,data);
     }
-    abstract void loadImage(ImageView imageView, int position, Integer data);
+    public abstract void loadImage(ImageView imageView, int position, Integer data);
 }

@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.activity;
 
 import android.annotation.SuppressLint;
 import android.app.SharedElementCallback;
@@ -9,16 +9,18 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.beyondsw.lib.widget.StackCardsView;
+import com.beyondsw.widget.BaseCardItem;
+import com.beyondsw.widget.CardAdapter;
+import com.beyondsw.widget.ImageCardItem;
+import com.beyondsw.widget.utlis.ImageUrls;
+import com.beyondsw.widget.R;
+import com.beyondsw.widget.utlis.TodayFateAdminUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,12 +207,12 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
             for (int i = startIndex; i <= endIndex; i++) {
                 ImageCardItem item = new ImageCardItem(this, ImageUrls.images3) {
                     @Override
-                    void onEndAnim() {
+                    public void onEndAnim() {
                         TodayFateAdminUtils.startEndAdmin(mCardsView);
                     }
 
                     @Override
-                    void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, int currentTab) {
+                    public void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, int currentTab) {
                         mImageCardItem = imageCardItem;
                         mImageView = view;
                         startTransitionShrink(view, currentTab);

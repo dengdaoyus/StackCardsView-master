@@ -1,7 +1,8 @@
-package com.beyondsw.widget
+package com.beyondsw.widget.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.beyondsw.widget.R
 import kotlinx.android.synthetic.main.avtivity_ripplespread.*
 
 

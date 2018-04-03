@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.ripple;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+
+import com.beyondsw.widget.R;
 
 /**
  * 仿支付宝咻一咻

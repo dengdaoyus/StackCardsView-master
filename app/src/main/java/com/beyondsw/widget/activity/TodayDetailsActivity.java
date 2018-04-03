@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.activity;
 
 import android.app.SharedElementCallback;
 import android.content.Intent;
@@ -11,9 +11,11 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.beyondsw.widget.R;
+import com.beyondsw.widget.utlis.ImageUrls;
+import com.beyondsw.widget.view.LocalImageHolderView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 
@@ -24,7 +26,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.beyondsw.widget.CardFragment.OPTION_IMAGE;
+import static com.beyondsw.widget.activity.CardFragment.OPTION_IMAGE;
 
 /**
  *
@@ -72,7 +74,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
     }
 
     private void initBanner() {
-
         //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
@@ -81,7 +82,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
                         return new LocalImageHolderView() {
                             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                             @Override
-                            void loadImage(final ImageView imageView, int position, Integer data) {
+                            public void loadImage(final ImageView imageView, int position, Integer data) {
                                 imageView.setImageResource(data);
                                 imageView.setTransitionName(OPTION_IMAGE + position);
                                 if (mStartPosition == position) {

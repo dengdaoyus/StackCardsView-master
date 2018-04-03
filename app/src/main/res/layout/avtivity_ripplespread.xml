@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:visibility="visible">
 
-        <com.beyondsw.widget.RippleSpreadView xmlns:RippleWaveView="http://schemas.android.com/apk/res-auto"
+        <com.beyondsw.widget.ripple.RippleSpreadView xmlns:RippleWaveView="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rippleSpreadView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -39,7 +39,7 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:visibility="visible">-->
 
-    <!--<com.beyondsw.widget.WhewView-->
+    <!--com.beyondsw.widget.ripple.WhewViewView-->
     <!--android:id="@+id/whenView"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
@@ -59,7 +59,7 @@
 
     <!--</RelativeLayout>-->
 
-    <!--<com.beyondsw.widget.ZhifubaoFrameLayout-->
+    <!--com.beyondsw.widget.ripple.ZhifubaoFrameLayoutyout-->
     <!--android:id="@+id/zhifubaoFrameLayout"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_gravity="center"-->
@@ -76,7 +76,7 @@
     <!--app:riv_border_color="@android:color/black"-->
     <!--app:riv_border_width="1dp"-->
     <!--app:riv_oval="true" />-->
-    <!--</com.beyondsw.widget.ZhifubaoFrameLayout>-->
+    <!--com.beyondsw.widget.ripple.ZhifubaoFrameLayoutyout>-->
 
     <Button
         android:id="@+id/button"

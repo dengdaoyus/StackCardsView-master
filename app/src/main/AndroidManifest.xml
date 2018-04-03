@@ -13,24 +13,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CardFragment"
+            android:name=".activity.CardFragment"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".swipecard.CardSwipeActivity"
+            android:screenOrientation="portrait">
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
-            android:name=".RippleSpreadTestActivity"
+            android:name=".activity.RippleSpreadTestActivity"
             android:screenOrientation="portrait">
 
         </activity>
         <activity
-            android:name=".TodayDetailsActivity"
-            android:theme="@style/AppTheme.Detail"
-            android:screenOrientation="portrait" />
-
+            android:name=".activity.TodayDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Detail" />
 
 
         <activity android:name="uitransition.MainActivity">
@@ -39,15 +45,15 @@
 
         <activity
             android:name="uitransition.ui_trasition.ImageActivity"
-            android:theme="@style/AppTheme.Main"/>
+            android:theme="@style/AppTheme.Main" />
         <activity
             android:name="uitransition.ui_trasition.DetailActivity"
-            android:theme="@style/AppTheme.Detail"/>
+            android:theme="@style/AppTheme.Detail" />
 
-        <activity android:name="uitransition.manual_transition.AnimeActivity"/>
+        <activity android:name="uitransition.manual_transition.AnimeActivity" />
         <activity
             android:name="uitransition.manual_transition.AnimeDetailActivity"
-            android:theme="@style/AppTheme.AnimeDetail"/>
+            android:theme="@style/AppTheme.AnimeDetail" />
 
         <activity
             android:name="uitransition.TestActivity"

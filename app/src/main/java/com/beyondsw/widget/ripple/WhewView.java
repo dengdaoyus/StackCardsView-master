@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.ripple;
 
 /**
  * 仿支付宝咻一咻

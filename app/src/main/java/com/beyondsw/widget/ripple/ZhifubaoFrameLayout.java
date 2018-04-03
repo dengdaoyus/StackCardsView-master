@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.ripple;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

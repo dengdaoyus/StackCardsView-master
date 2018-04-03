@@ -9,23 +9,23 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-import static com.beyondsw.widget.CardFragment.OPTION_IMAGE;
+import static com.beyondsw.widget.activity.CardFragment.OPTION_IMAGE;
 
 
-abstract class ImageCardItem extends BaseCardItem {
-    private int[] avatar;
+public abstract class ImageCardItem extends BaseCardItem {
+    private Integer[] avatar;
     private int currentTab = 0;
 
-    ImageCardItem(Context context, int[] avatar) {
+    public ImageCardItem(Context context, Integer[] avatar) {
         super(context);
         this.avatar = avatar;
     }
 
-    static class ViewHolder {
-        ImageView left;
-        ImageView right;
-        ImageView up;
-        ImageView down;
+    public static class ViewHolder {
+        public ImageView left;
+        public ImageView right;
+        public ImageView up;
+        public ImageView down;
     }
 
     RoundImageView imageView;
@@ -91,7 +91,7 @@ abstract class ImageCardItem extends BaseCardItem {
     }
 
 
-    void loadAvatar(int currentTab, ImageView imageView) {
+    public void loadAvatar(int currentTab, ImageView imageView) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setTransitionName(OPTION_IMAGE + currentTab);
@@ -104,7 +104,7 @@ abstract class ImageCardItem extends BaseCardItem {
                 .into(imageView);
     }
 
-    void setCurrentTab(int currentTab) {
+    public void setCurrentTab(int currentTab) {
         this.currentTab=currentTab;
         iconPageIndicator.setCurrentItem(currentTab);
     }
@@ -112,8 +112,8 @@ abstract class ImageCardItem extends BaseCardItem {
         return avatar.length;
     }
 
-    abstract void onEndAnim();
+    public abstract void onEndAnim();
 
     //转场收缩
-    abstract void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, int currentTab);
+    public abstract void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, int currentTab);
 }

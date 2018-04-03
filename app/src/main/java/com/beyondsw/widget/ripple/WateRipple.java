@@ -1,4 +1,4 @@
-package com.beyondsw.widget;
+package com.beyondsw.widget.ripple;
 
 import android.content.Context;
 import android.graphics.Canvas;

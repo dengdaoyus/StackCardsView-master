@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import com.beyondsw.widget.R;
 import com.beyondsw.widget.RoundImageView;
@@ -19,7 +20,7 @@ public class CardsAdapter extends ArrayAdapter<Integer> {
     private final ArrayList<Integer> cards;
     private final LayoutInflater layoutInflater;
 
-    RoundImageView imageView;
+
 
     public CardsAdapter(Context context, ArrayList<Integer> cards) {
         super(context, -1);
@@ -30,8 +31,8 @@ public class CardsAdapter extends ArrayAdapter<Integer> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View view = layoutInflater.inflate(R.layout.item_imagecard, parent, false);
-         imageView = view.findViewById(R.id.image);
+        View view = layoutInflater.inflate(R.layout.item_imagecard, parent,false);
+        ImageView imageView = view.findViewById(R.id.image);
         imageView.setImageResource(cards.get(position));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setTransitionName(OPTION_IMAGE + position);
@@ -43,7 +44,6 @@ public class CardsAdapter extends ArrayAdapter<Integer> {
     public Integer getItem(int position) {
         return cards.get(position);
     }
-
 
 
     @Override

@@ -37,7 +37,7 @@
                     android:background="@android:color/transparent" />
             </LinearLayout>
 
-            <com.beyondsw.widget.RoundImageView
+            <ImageView
                 android:id="@+id/image"
                 android:src="@drawable/img"
                 android:layout_width="match_parent"

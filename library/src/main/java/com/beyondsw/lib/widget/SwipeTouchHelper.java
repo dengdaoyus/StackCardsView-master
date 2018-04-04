@@ -43,11 +43,11 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
     private int mMaxVelocity;
     private float mMinVelocity;
     private float mMinFastDisappearVelocity;
-    private VelocityTracker mVelocityTracker;
+    private VelocityTracker mVelocityTracker;//VelocityTracker顾名思义即速度跟踪
     private static final int INVALID_POINTER = -1;
     private int mActivePointerId = INVALID_POINTER;
     private boolean mOnTouchableChild;
-    private boolean mIsBeingDragged;
+    private boolean mIsBeingDragged;//是否开始移动标志
     private boolean mIsTouchOn;
     private int mDisappearingCnt;
     private View mTouchChild;
@@ -140,6 +140,7 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
         }
     }
 
+    //告诉父控件 我自己处理事件 requestDisallowInterceptTouchEvent
     private void requestParentDisallowInterceptTouchEvent(boolean disallowIntercept) {
         final ViewParent parent = mSwipeView.getParent();
         if (parent != null) {
@@ -147,6 +148,7 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
         }
     }
 
+    //是否点击在view上
     private static boolean isTouchOnView(View view, float x, float y) {
         if (view == null) {
             return false;
@@ -219,7 +221,7 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
 
     private boolean canDrag(float dx, float dy) {
         final StackCardsView.LayoutParams lp = (StackCardsView.LayoutParams) mTouchChild.getLayoutParams();
-        final int direction = lp.swipeDirection;
+        final int direction = lp.swipeDirection;//滑动方向
         if (direction == StackCardsView.SWIPE_ALL) {
             return true;
         } else if (direction == 0) {
@@ -241,30 +243,6 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
         }
     }
 
-    private void performDrag(float dx, float dy) {
-        if (mTouchChild == null) {
-            return;
-        }
-        if (mSmoothUpdater != null && mSmoothUpdater.isRunning()) {
-            mSmoothUpdater.end();
-        }
-        if (mManualUpdateListener != null) {
-            mManualUpdateListener.end();
-            mManualUpdateListener = null;
-        }
-        mTouchChild.setX(mTouchChild.getX() + dx);
-        mTouchChild.setY(mTouchChild.getY() + dy);
-        final StackCardsView.LayoutParams lp = (StackCardsView.LayoutParams) mTouchChild.getLayoutParams();
-        final float maxRotation = lp.maxRotation;
-        float rotation = maxRotation * (mTouchChild.getX() - mChildInitX) / mSwipeView.getDismissDistance();
-        if (rotation > maxRotation) {
-            rotation = maxRotation;
-        } else if (rotation < -maxRotation) {
-            rotation = -maxRotation;
-        }
-        mTouchChild.setRotation(rotation);
-        onCoverScrolled(mTouchChild);
-    }
 
     private void animateToInitPos() {
         if (mTouchChild != null) {
@@ -689,7 +667,7 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
             return false;
         }
         final View touchChild = mTouchChild;
-        final int action = ev.getAction() & MotionEvent.ACTION_MASK;
+        final int action = ev.getAction() & MotionEvent.ACTION_MASK; //处理多点触摸的ACTION_POINTER_DOWN和ACTION_POINTER_UP事件。
         if (action == MotionEvent.ACTION_DOWN) {
             clearVelocityTracker();
         }
@@ -703,11 +681,14 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
             case MotionEvent.ACTION_DOWN: {
                 float x = ev.getX();
                 float y = ev.getY();
-                if (!(mOnTouchableChild = isTouchOnView(touchChild, x, y))) {
+                mOnTouchableChild = isTouchOnView(touchChild, x, y);
+                logw(TAG, "isTouchOnView   " + mOnTouchableChild);
+                if (!mOnTouchableChild) {
                     return false;
                 }
-                mActivePointerId = ev.getPointerId(0);
-                mIsTouchOn = true;
+                mActivePointerId = ev.getPointerId(0);//获取第一个按下的点
+                logw(TAG, "mActivePointerIds   " + mActivePointerId);
+                mIsTouchOn = true;//是否获取事件
                 mSwipeView.onCoverStatusChanged(false);
                 requestParentDisallowInterceptTouchEvent(true);
                 mInitDownX = mLastX = x;
@@ -715,17 +696,24 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
+                logw(TAG, "mActivePointerIds   " + mActivePointerId + "   " + INVALID_POINTER);
                 if (mActivePointerId == INVALID_POINTER) {
                     break;
                 }
+                //获取按下点的坐标
                 int pointerIndex = ev.findPointerIndex(mActivePointerId);
                 float x = ev.getX(pointerIndex);
                 float y = ev.getY(pointerIndex);
+
+                logw(TAG, "mInitDown -------------------------------------   ");
+                logw(TAG, "mInitDownX   " + mInitDownX + "   x  " + x);
+                logw(TAG, "mInitDownY   " + mInitDownY + "   y  " + y);
                 float dx = x - mInitDownX;
                 float dy = y - mInitDownY;
                 mLastX = x;
                 mLastY = y;
                 if ((Math.abs(dx) > mDragSlop || (Math.abs(dy) > mDragSlop)) && canDrag(dx, dy)) {
+                    logw(TAG, "cancelSpringIfNeeded -------------------------------------   ");
                     cancelSpringIfNeeded();
                     mIsBeingDragged = true;
                 }
@@ -748,9 +736,11 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
                 break;
             }
         }
+        log(TAG, "onInterceptTouchEvent action                                     ----------------");
         log(TAG, "onInterceptTouchEvent action=" + action + ",mIsBeingDragged=" + mIsBeingDragged);
         return mIsBeingDragged;
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -767,6 +757,15 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
                 }
                 break;
             }
+            case MotionEvent.ACTION_POINTER_UP: {
+                log(TAG, "onTouchEvent ACTION_POINTER_UP,mActivePointerId=" + mActivePointerId);
+                int activePointerIndex = ev.findPointerIndex(mActivePointerId);
+                if (activePointerIndex == ev.getActionIndex()) {
+                    onTouchRelease();
+                }
+                break;
+            }
+
             case MotionEvent.ACTION_MOVE: {
                 //子view未消费down事件时，mIsBeingDragged为false
                 log(TAG, "onTouchEvent ACTION_MOVE,mActivePointerId=" + mActivePointerId);
@@ -775,22 +774,22 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
                     break;
                 }
                 int pointerIndex = ev.findPointerIndex(mActivePointerId);
-                float x = ev.getX(pointerIndex);
-                float y = ev.getY(pointerIndex);
+                float xMove = ev.getX(pointerIndex);
+                float yMove = ev.getY(pointerIndex);
                 if (!mIsBeingDragged) {
                     cancelSpringIfNeeded();
-                    float dx = x - mInitDownX;
-                    float dy = y - mInitDownY;
+                    float dx = xMove - mInitDownX;
+                    float dy = yMove - mInitDownY;
                     if ((Math.abs(dx) <= mDragSlop && (Math.abs(dy) <= mDragSlop)) || !canDrag(dx, dy)) {
-                        mLastX = x;
-                        mLastY = y;
+                        mLastX = xMove;
+                        mLastY = yMove;
                         return false;
                     }
                     mIsBeingDragged = true;
                 }
-                performDrag(x - mLastX, y - mLastY);
-                mLastX = x;
-                mLastY = y;
+                performDrag((xMove - mLastX), (yMove - mLastY));
+                mLastX = xMove;
+                mLastY = yMove;
                 break;
             }
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -805,17 +804,57 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
                 onTouchRelease();
                 break;
             }
-            case MotionEvent.ACTION_POINTER_UP: {
-                log(TAG, "onTouchEvent ACTION_POINTER_UP,mActivePointerId=" + mActivePointerId);
-                int activePointerIndex = ev.findPointerIndex(mActivePointerId);
-                if (activePointerIndex == ev.getActionIndex()) {
-                    onTouchRelease();
-                }
-                break;
-            }
+
         }
         return true;
     }
+
+
+    /**
+     * 设置卡片偏移
+     *
+     * @param dx
+     * @param dy
+     */
+    private void performDrag(float dx, float dy) {
+        if (mTouchChild == null) {
+            return;
+        }
+        if (mSmoothUpdater != null && mSmoothUpdater.isRunning()) {
+            mSmoothUpdater.end();
+        }
+        if (mManualUpdateListener != null) {
+            mManualUpdateListener.end();
+            mManualUpdateListener = null;
+        }
+
+
+        mTouchChild.setX(mTouchChild.getX() + dx);
+        mTouchChild.setY(mTouchChild.getY() + dy);
+
+        final StackCardsView.LayoutParams lp = (StackCardsView.LayoutParams) mTouchChild.getLayoutParams();
+        final float maxRotation = lp.maxRotation;
+        float distobjectX = mTouchChild.getX() - mChildInitX;
+//        float rotation = maxRotation * distobjectX / mSwipeView.getDismissDistance();
+//        if (rotation > maxRotation) { //user/destinyUserRedis
+//            rotation = maxRotation;
+//        } else if (rotation < -maxRotation) {
+//            rotation = -maxRotation;
+//        }
+
+        float rotation = maxRotation* 2.f * distobjectX / mSwipeView.getWidth();
+
+        // calculate the rotation degrees
+
+//        float rotation = maxRotation * 2.f * distobjectX /mSwipeView.getWidth() ;
+        if (mInitDownY > mSwipeView.getHeight() / 2) {
+            rotation = -rotation;
+        }
+
+        mTouchChild.setRotation(rotation);
+        onCoverScrolled(mTouchChild);
+    }
+
 
     private static void log(String tag, String msg) {
         if (StackCardsView.DEBUG) {

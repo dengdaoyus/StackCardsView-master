@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-//import android.widget.Adapter;
 import android.widget.Adapter;
 import android.widget.FrameLayout;
 
@@ -122,11 +121,6 @@ public class SwipeCardView extends BaseFlingAdapterView {
     public Object getCurrentItem(){
         return mAdapter.getItem(START_STACK_FROM);
     }
-
-//    public View getCurrentView(){
-//        return mAdapter.getView(START_STACK_FROM)
-//    }
-
 
     @Override
     public void requestLayout() {
@@ -390,6 +384,7 @@ public class SwipeCardView extends BaseFlingAdapterView {
     public Adapter getAdapter() {
         return mAdapter;
     }
+
 
     @Override
     public void setAdapter(Adapter adapter) {

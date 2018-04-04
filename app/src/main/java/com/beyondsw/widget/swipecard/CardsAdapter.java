@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.beyondsw.widget.R;
 import com.beyondsw.widget.RoundImageView;
@@ -37,6 +38,12 @@ public class CardsAdapter extends ArrayAdapter<Integer> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setTransitionName(OPTION_IMAGE + position);
         }
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(),"imageView", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return view;
     }
 

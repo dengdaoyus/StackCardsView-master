@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.beyondsw.lib.widget.ISwipeTouchHelper;
+
 
 public class FlingCardListener implements View.OnTouchListener {
 
@@ -73,6 +75,7 @@ public class FlingCardListener implements View.OnTouchListener {
 
     private float MAX_COS = (float) Math.cos(Math.toRadians(45));
 
+    private ISwipeTouchHelper mTouchHelper;
 
     public FlingCardListener(SwipeCardView parent, View frame, Object itemAtPosition, FlingListener flingListener) {
         this(parent, frame, itemAtPosition, 15f, flingListener);
@@ -230,9 +233,9 @@ public class FlingCardListener implements View.OnTouchListener {
                     .y(objectY)
                     .rotation(0);
             mFlingListener.onScroll(0.0f);
-            if (abslMoveDistance < 4.0) {
-                mFlingListener.onClick(dataObject);
-            }
+//            if (abslMoveDistance < 4.0) {
+//                mFlingListener.onClick(dataObject);
+//            }
         }
         return false;
     }

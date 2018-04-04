@@ -28,14 +28,14 @@ public abstract class ImageCardItem extends BaseCardItem {
         public ImageView down;
     }
 
-    RoundImageView imageView;
+    ImageView imageView;
     IconPageIndicator iconPageIndicator;
 
     @Override
     public View getView(View convertView, ViewGroup parent) {
         convertView = View.inflate(mContext, R.layout.item_imagecard, null);
         imageView = convertView.findViewById(R.id.image);
-        imageView.setCurrRound(7);
+//        imageView.setCurrRound(7);
         iconPageIndicator = convertView.findViewById(R.id.iconPageIndicator);
         iconPageIndicator.setCurrentCount(avatar.length);
         iconPageIndicator.setCurrentItem(currentTab);

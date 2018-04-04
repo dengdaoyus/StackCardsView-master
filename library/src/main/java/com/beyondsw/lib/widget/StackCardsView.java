@@ -91,13 +91,13 @@ public class StackCardsView extends FrameLayout {
 
     private static final float DRAG_SENSITIVITY = 2f;
 
-    private int mMaxVisibleCnt;
-    private float mScaleFactor;
-    private float mAlphaFactor;
-    private float mDismissFactor;
-    private int mLayerEdgeHeight;
+    private int mMaxVisibleCnt;//不滑动时最多可以看到的卡片数
+    private float mScaleFactor;//每层相对于上层的scale系数
+    private float mAlphaFactor;//每层相对于上层的alpha系数
+    private float mDismissFactor;//滑动距离超过控件宽度的多少比例时消失
+    private int mLayerEdgeHeight;//层叠效果高度
     private float mDismissAlpha;
-    private float mDragSensitivity;
+    private float mDragSensitivity;//滑动灵敏度
     private float mDismissDistance;
 
     private InnerDataObserver mDataObserver;
@@ -394,6 +394,7 @@ public class StackCardsView extends FrameLayout {
                 .maxRotation(adapter.getMaxRotation(position));
     }
 
+    //创建卡片
     private void initChildren() {
         int cnt = mAdapter == null ? 0 : mAdapter.getCount();
         if (cnt == 0) {

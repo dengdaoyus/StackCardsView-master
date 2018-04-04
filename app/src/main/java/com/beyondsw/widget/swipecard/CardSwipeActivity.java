@@ -79,8 +79,14 @@ public class CardSwipeActivity extends AppCompatActivity {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
                 makeToast(CardSwipeActivity.this, String.valueOf(swipeCardView.getCurrentPosition()));
+//                swipeCardView.getSelectedView().findViewById(R.id.image).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        makeToast(CardSwipeActivity.this,"imageView");
+//                    }
+//                });
 
-                startTransitionShrink(swipeCardView.getSelectedView().findViewById(R.id.image),swipeCardView.getCurrentPosition());
+//                startTransitionShrink(swipeCardView.getSelectedView().findViewById(R.id.image),swipeCardView.getCurrentPosition());
             }
         });
         al.addAll(Arrays.asList(ImageUrls.images3));

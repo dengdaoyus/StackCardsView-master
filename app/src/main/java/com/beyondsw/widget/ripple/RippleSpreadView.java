@@ -7,40 +7,50 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.beyondsw.widget.R;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 仿支付宝咻一咻
  */
 public class RippleSpreadView extends View {
-    private Paint innerPaint;
-    private Paint outPaint;
-    private float innerSize;
-    private int innerColor;
-    private int innerAnimDuration;
-    private int outColor;
-    private float outSize;
-    private float outSizeX;
-    private float outSizeXX;
-    private float outSizeXXX;
-    private float outSizeOld;
-    private int outAnimDuration;
-    private int width;
-    private int height;
-    private ObjectAnimator innerSizeAnimator;
-    private float outSizeStart;
-    private float outSizeEnd;
-    private float outSpreadValue;
-    private ObjectAnimator outSizeAnimator;
-    private ObjectAnimator outSizeXAnimator;
-    private ObjectAnimator outSizeXXAnimator;
-    private ObjectAnimator outSizeXXXAnimator;
-    private Interpolator linearInterpolator;
+    private float mInitialRadius;   // 初始波纹半径
+    private float mMaxRadius;   // 最大波纹半径
+    private int mSpeed =800;   // 波纹的创建速度，每500ms创建一个
+    private long mDuration =mSpeed*2; // 一个波纹从创建到消失的持续时间
+    private float mMaxRadiusRate = 0.85f;
+    private boolean mMaxRadiusSet;
+
+    private boolean mIsRunning;
+    private long mLastCreateTime;
+    private List<Circle> mCircleList = new ArrayList<Circle>();
+
+    private Runnable mCreateCircle = new Runnable() {
+        @Override
+        public void run() {
+            if (mIsRunning) {
+                newCircle();
+                postDelayed(mCreateCircle, mSpeed);
+            }
+        }
+    };
+
+    private Interpolator mInterpolator = new LinearInterpolator();
+
+    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public RippleSpreadView(Context context) {
         super(context);
@@ -48,208 +58,120 @@ public class RippleSpreadView extends View {
 
     public RippleSpreadView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(attrs);
     }
 
-    private void initView(AttributeSet attrs) {
-        linearInterpolator = new LinearInterpolator();
-        outSpreadValue = 1.2F;
-        Context context = getContext();
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleSpreadView);
-        innerColor = typedArray.getColor(R.styleable.RippleSpreadView_rsv_innerCircleColor, Color.parseColor("#DBDBFF"));
-        innerSize = typedArray.getDimension(R.styleable.RippleSpreadView_rsv_innerSize, 20F);
-        innerAnimDuration = typedArray.getInt(R.styleable.RippleSpreadView_rsv_innerAnimDuration, 500);
-        outColor = typedArray.getColor(R.styleable.RippleSpreadView_rsv_outCircleColor, Color.parseColor("#DBDBFF"));
-        outSize = typedArray.getDimension(R.styleable.RippleSpreadView_rsv_outSize, 24F);
-        outAnimDuration = typedArray.getInt(R.styleable.RippleSpreadView_rsv_outAnimDuration, 700);
-        typedArray.recycle();
-
-        innerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        innerPaint.setStyle(Paint.Style.FILL);
-        innerPaint.setColor(innerColor);
-        outPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        outPaint.setStyle(Paint.Style.FILL);
-        outPaint.setColor(outColor);
-        if (innerSize < dp2Px(8)) {
-            innerSize = dp2Px(20);
-        }
-        if ((innerAnimDuration < 100) || (innerAnimDuration > 10000)) {
-            innerAnimDuration = 2000;
-        }
-        if (outSize < dp2Px(8)) {
-            outSize = dp2Px(8);
-        }
-        if (outSize - innerSize < dp2Px(2)) {
-            outSize = innerSize + dp2Px(2);
-        }
-        outSizeOld = outSize;
-
-        if ((outAnimDuration < 100) || (outAnimDuration > 10000)) {
-            outAnimDuration = 2000;
-        }
-        innerSizeAnimator = ObjectAnimator.ofFloat(this, "innerSize", innerSize * 1F, innerSize * 1.1F, innerSize * 1F, innerSize * 1.1F).setDuration(innerAnimDuration);
-        innerSizeAnimator.setInterpolator(linearInterpolator);
-        innerSizeAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        innerSizeAnimator.setRepeatCount(Integer.MAX_VALUE);
-
-        outSizeStart = innerSize * 0.9F;
-        outSizeEnd = outSize * outSpreadValue;
-
-        outSizeAnimator = ObjectAnimator.ofFloat(this, "outSize", outSizeStart, outSizeEnd).setDuration((long) (outAnimDuration));
-        outSizeXAnimator = ObjectAnimator.ofFloat(this, "outSizeX", outSizeStart, outSizeEnd).setDuration((long) (outAnimDuration));
-        outSizeXXAnimator = ObjectAnimator.ofFloat(this, "outSizeXX", outSizeStart, outSizeEnd).setDuration((long) (outAnimDuration));
-        outSizeXXXAnimator = ObjectAnimator.ofFloat(this, "outSizeXXX", outSizeStart, outSizeEnd).setDuration((long) (outAnimDuration));
-
-        initObjectAnimator(outSizeAnimator);
-        initObjectAnimator(outSizeXAnimator);
-        initObjectAnimator(outSizeXXAnimator);
-        initObjectAnimator(outSizeXXXAnimator);
-        outSizeXAnimator.setStartDelay((long) (outAnimDuration / 4));
-        outSizeXXAnimator.setStartDelay((long) (outAnimDuration * 2 / 4));
-        outSizeXXXAnimator.setStartDelay((long) (outAnimDuration * 3 / 4));
-
-        try {
-            innerSizeAnimator.start();
-            outSizeAnimator.start();
-            outSizeXAnimator.start();
-            outSizeXXAnimator.start();
-            outSizeXXXAnimator.start();
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void initObjectAnimator(ObjectAnimator objectAnimator) {
-        objectAnimator.setRepeatMode(ValueAnimator.RESTART);
-        objectAnimator.setRepeatCount(Integer.MAX_VALUE);
+    public void setStyle(Paint.Style style) {
+        mPaint.setStyle(style);
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (!mMaxRadiusSet) {
+            mMaxRadius = Math.min(w, h) * mMaxRadiusRate / 2.0f;
+        }
+    }
+
+    public void setMaxRadiusRate(float maxRadiusRate) {
+        mMaxRadiusRate = maxRadiusRate;
+    }
+
+    public void setColor(int color) {
+        mPaint.setColor(color);
+    }
+
+    /**
+     * 开始
+     */
+    public void start() {
+        if (!mIsRunning) {
+            mIsRunning = true;
+            mCreateCircle.run();
+        }
+    }
+
+    /**
+     * 缓慢停止
+     */
+    public void stop() {
+        mIsRunning = false;
+    }
+
+    /**
+     * 立即停止
+     */
+    public void stopImmediately() {
+        mIsRunning = false;
+        mCircleList.clear();
+        invalidate();
+    }
+
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        drawCircle(canvas, outSize, outPaint, outSizeEnd, outSizeStart, outSizeOld);
-        drawCircle(canvas, outSizeX, outPaint, outSizeEnd, outSizeStart, outSizeOld);
-        drawCircle(canvas, outSizeXX, outPaint, outSizeEnd, outSizeStart, outSizeOld);
-        drawCircle(canvas, outSizeXXX, outPaint, outSizeEnd, outSizeStart, outSizeOld);
-        canvas.drawCircle((width - 0) * 0.5F, (height - 0) * 0.5F, innerSize * 0.5F, innerPaint);
-    }
-
-    private final void drawCircle(Canvas canvas, float outSize, Paint outPaint, float outSizeEnd, float outSizeStart, float outSizeOld) {
-        float k = 255 / (outSizeEnd - outSizeStart);
-        int alpha = (int) (k * outSizeOld * outSpreadValue - k * outSize);
-        outPaint.setAlpha(alpha);
-        canvas.drawCircle((width - 0) * 0.5F, (height - 0) * 0.5F, outSize * 0.5F, outPaint);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        try {
-            if (innerSizeAnimator != null) {
-                innerSizeAnimator.cancel();
+        Iterator<Circle> iterator = mCircleList.iterator();
+        while (iterator.hasNext()) {
+            Circle circle = iterator.next();
+            float radius = circle.getCurrentRadius();
+            if (System.currentTimeMillis() - circle.mCreateTime < mDuration) {
+                mPaint.setAlpha(circle.getAlpha());
+                canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, mPaint);
+            } else {
+                iterator.remove();
             }
-            if (outSizeAnimator != null) {
-                outSizeAnimator.cancel();
-            }
-        } catch (Exception e) {
-
+        }
+        if (mCircleList.size() > 0) {
+            postInvalidateDelayed(10);
         }
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        innerSizeAnimator.start();
-        outSizeAnimator.start();
-        isStarting=true;
+    public void setInitialRadius(float radius) {
+        mInitialRadius = radius;
     }
 
-    public void startAdmin() {
-        try {
-            isStarting=true;
-            innerSizeAnimator.start();
-            outSizeAnimator.start();
-            outSizeXAnimator.start();
-            outSizeXXAnimator.start();
-            outSizeXXXAnimator.start();
-        } catch (Exception e) {
+    public void setDuration(long duration) {
+        mDuration = duration;
+    }
 
+    public void setMaxRadius(float maxRadius) {
+        mMaxRadius = maxRadius;
+        mMaxRadiusSet = true;
+    }
+
+    public void setSpeed(int speed) {
+        mSpeed = speed;
+    }
+
+    private void newCircle() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - mLastCreateTime < mSpeed) {
+            return;
+        }
+        Circle circle = new Circle();
+        mCircleList.add(circle);
+        invalidate();
+        mLastCreateTime = currentTime;
+    }
+
+    private class Circle {
+        private long mCreateTime;
+
+        Circle() {
+            mCreateTime = System.currentTimeMillis();
+        }
+
+        int getAlpha() {
+            float percent = (getCurrentRadius() - mInitialRadius) / (mMaxRadius - mInitialRadius);
+            return (int) (255 - mInterpolator.getInterpolation(percent) * 255);
+        }
+
+        float getCurrentRadius() {
+            float percent = (System.currentTimeMillis() - mCreateTime) * 1.0f / mDuration;
+            return mInitialRadius + mInterpolator.getInterpolation(percent) * (mMaxRadius - mInitialRadius);
         }
     }
 
-    public void stopAdmin() {
-        try {
-            innerSizeAnimator.pause();
-            outSizeAnimator.pause();
-            outSizeXAnimator.pause();
-            outSizeXXAnimator.pause();
-            outSizeXXXAnimator.pause();
-            isStarting=false;
-        } catch (Exception e) {
-
+    public void setInterpolator(Interpolator interpolator) {
+        mInterpolator = interpolator;
+        if (mInterpolator == null) {
+            mInterpolator = new LinearInterpolator();
         }
     }
-
-
-    public boolean isAdmin() {
-          return isStarting;
-    }
-
-    /**
-     * 供 innerSizeAnimator 调用
-     */
-    public void setInnerSize(float innerSize) {
-        this.innerSize = innerSize;
-        invalidate();
-    }
-
-    /**
-     * 供 outSizeAnimator 调用
-     */
-    public void setOutSize(float outSize) {
-        this.outSize = outSize;
-        invalidate();
-    }
-
-    /**
-     * 供 outSizeAnimator 调用
-     */
-    public void setOutSizeX(float outSize) {
-        this.outSizeX = outSize;
-        invalidate();
-    }
-
-    /**
-     * 供 outSizeAnimator 调用
-     */
-    public void setOutSizeXX(float outSize) {
-        this.outSizeXX = outSize;
-        invalidate();
-    }
-
-    /**
-     * 供 outSizeAnimator 调用
-     */
-    public void setOutSizeXXX(float outSize) {
-        this.outSizeXXX = outSize;
-        invalidate();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        width = (int) outSizeEnd;
-        height = (int) outSizeEnd;
-        setMeasuredDimension(width, height);
-    }
-
-    /**
-     * 数据转换: dp---->px
-     */
-    private float dp2Px(float dp) {
-        return dp * getContext().getResources().getDisplayMetrics().density;
-    }
-    // 是否运行
-    private boolean isStarting = false;
 }

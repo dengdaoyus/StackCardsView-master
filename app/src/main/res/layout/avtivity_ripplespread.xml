@@ -12,25 +12,22 @@
         android:layout_gravity="center"
         android:visibility="visible">
 
-        <com.beyondsw.widget.ripple.RippleSpreadView xmlns:RippleWaveView="http://schemas.android.com/apk/res-auto"
+        <com.beyondsw.widget.ripple.RippleSpreadView
             android:id="@+id/rippleSpreadView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_gravity="bottom|center_horizontal"
-            RippleWaveView:rsv_innerAnimDuration="1000"
-            RippleWaveView:rsv_innerCircleColor="#DBDBFF"
-            RippleWaveView:rsv_outCircleColor="#DBDBFF"
-            RippleWaveView:rsv_innerSize="1dp"
-            RippleWaveView:rsv_outAnimDuration="3000"
-            RippleWaveView:rsv_outSize="240dp" />
+            android:layout_gravity="bottom|center_horizontal" />
 
         <com.makeramen.roundedimageview.RoundedImageView
+            android:visibility="visible"
             android:layout_width="114dp"
             android:layout_height="114dp"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:src="@drawable/img"
+            app:riv_border_width="5dp"
+            app:riv_border_color="@android:color/white"
             app:riv_oval="true" />
     </RelativeLayout>
 

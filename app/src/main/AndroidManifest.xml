@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.RippleSpreadTestActivity"
+            android:name=".activity.CardFragment"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,11 +28,11 @@
 
 
         </activity>
-        <!--<activity-->
-            <!--android:name=".activity.RippleSpreadTestActivity"-->
-            <!--android:screenOrientation="portrait">-->
+        <activity
+            android:name=".activity.RippleSpreadTestActivity"
+            android:screenOrientation="portrait">
 
-        <!--</activity>-->
+        </activity>
         <activity
             android:name=".activity.TodayDetailsActivity"
             android:screenOrientation="portrait"

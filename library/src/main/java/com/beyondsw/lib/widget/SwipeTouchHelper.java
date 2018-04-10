@@ -842,11 +842,7 @@ public class SwipeTouchHelper implements ISwipeTouchHelper {
 //            rotation = -maxRotation;
 //        }
 
-        float rotation = maxRotation* 2.f * distobjectX / mSwipeView.getWidth();
-
-        // calculate the rotation degrees
-
-//        float rotation = maxRotation * 2.f * distobjectX /mSwipeView.getWidth() ;
+        float rotation = maxRotation * 2.f * distobjectX /mSwipeView.getWidth() ;
         if (mInitDownY > mSwipeView.getHeight() / 2) {
             rotation = -rotation;
         }

@@ -3,6 +3,7 @@ package com.beyondsw.widget.view;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,12 +16,11 @@ import com.bigkoo.convenientbanner.holder.Holder;
 public abstract class LocalImageHolderView implements Holder<Integer> {
     private ImageView imageView;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View createView(Context context) {
         imageView = new ImageView(context);
-
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         return imageView;
     }
 

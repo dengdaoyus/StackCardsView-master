@@ -52,6 +52,8 @@ public class StackCardsView extends FrameLayout {
      */
     public static final int SWIPE_ALL = SWIPE_LEFT | SWIPE_RIGHT | SWIPE_UP | SWIPE_DOWN;
 
+    public static final int SWIPE_ALL2 = SWIPE_LEFT | SWIPE_RIGHT | SWIPE_UP ;
+
     /**
      * 禁止滑动
      */

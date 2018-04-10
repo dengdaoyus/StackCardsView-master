@@ -9,8 +9,10 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -40,8 +42,8 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     private Handler mMainHandler;
     private static final int MSG_START_LOAD_DATA = 1;
     private static final int MSG_DATA_LOAD_DONE = 2;
-    private volatile int mStartIndex;
-    private static final int PAGE_COUNT = 20;
+    private volatile int mStartIndex=0;
+    private static final int PAGE_COUNT = 5;
 
     private ImageView iv_dislike;
     private ImageView iv_like;
@@ -81,6 +83,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
         super.onDestroy();
         TodayFateAdminUtils.onDestoryAdmin();
         mCardsView.removeOnCardSwipedListener(this);
+
         mWorkThread.quit();
         mWorkHandler.removeMessages(MSG_START_LOAD_DATA);
         mMainHandler.removeMessages(MSG_DATA_LOAD_DONE);
@@ -105,21 +108,23 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     @Override
     public void onCardDismiss(int direction) {
         mAdapter.remove(0);
-//        switch (direction) {
-//            case StackCardsView.SWIPE_LEFT:
+        switch (direction) {
+            case StackCardsView.SWIPE_LEFT:
+                Log.e("onCardDismiss","SWIPE_LEFT");
+                TodayFateAdminUtils.startEndAdmin(iv_dislike);
+                break;
+            case StackCardsView.SWIPE_RIGHT:
+                Log.e("onCardDismiss","SWIPE_RIGHT");
+                TodayFateAdminUtils.startEndAdmin(iv_like);
+                break;
+            case StackCardsView.SWIPE_UP:
+                Log.e("onCardDismiss","SWIPE_UP");
+                TodayFateAdminUtils.startEndAdmin(iv_follow);
+                break;
+            case StackCardsView.SWIPE_DOWN:
+                Log.e("onCardDismiss","SWIPE_DOWN");
 //                TodayFateAdminUtils.startEndAdmin(iv_dislike);
-//                break;
-//            case StackCardsView.SWIPE_RIGHT:
-//                TodayFateAdminUtils.startEndAdmin(iv_like);
-//                break;
-//            case StackCardsView.SWIPE_UP:
-//                TodayFateAdminUtils.startEndAdmin(iv_follow);
-//                break;
-//        }
-        if (mAdapter.getCount() < 3) {
-            if (!mWorkHandler.hasMessages(MSG_START_LOAD_DATA)) {
-                mWorkHandler.obtainMessage(MSG_START_LOAD_DATA).sendToTarget();
-            }
+                break;
         }
     }
 
@@ -200,12 +205,10 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     private ImageView mImageView = null;
 
     private List<BaseCardItem> loadData(int startIndex) {
-        if (startIndex < ImageUrls.images.length) {
-            final int endIndex = Math.min(mStartIndex + PAGE_COUNT, ImageUrls.images.length - 1);
-            List<BaseCardItem> result = new ArrayList<>(endIndex - startIndex + 1);
-            List<BaseCardItem> results= new ArrayList<>();
-            for (int i = startIndex; i <= endIndex; i++) {
-                ImageCardItem item = new ImageCardItem(this, ImageUrls.images3) {
+        if (startIndex < ImageUrls.images3.length) {
+            List<BaseCardItem> result= new ArrayList<>();
+            for (int i = startIndex; i < PAGE_COUNT; i++) {
+                ImageCardItem item = new ImageCardItem(this, ImageUrls.images4) {
                     @Override
                     public void onEndAnim() {
                         TodayFateAdminUtils.startEndAdmin(mCardsView);
@@ -219,7 +222,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
                     }
 
                 };
-                item.dismissDir = StackCardsView.SWIPE_ALL;
+                item.dismissDir = StackCardsView.SWIPE_ALL2;
                 item.fastDismissAllowed = true;
                 result.add(item);
             }
@@ -238,8 +241,8 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
         intent.putExtra("currentTab", currentTab);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // 这里指定了共享的视图元素
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, transitionView, OPTION_IMAGE + currentTab);
-            startActivityForResult(intent, 100, options.toBundle());
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, transitionView, transitionView.getTransitionName());
+            ActivityCompat.startActivityForResult(this,intent, 100, options.toBundle());
 //            setCallback(currentTab);
         } else {
             startActivity(intent);

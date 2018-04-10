@@ -11,9 +11,9 @@ import com.beyondsw.lib.widget.StackCardsView;
  */
 public abstract class BaseCardItem {
 
-    public boolean fastDismissAllowed = true;
+    public boolean fastDismissAllowed = false;
     int swipeDir = StackCardsView.SWIPE_ALL;
-    public int dismissDir = StackCardsView.SWIPE_ALL;
+    public int dismissDir = StackCardsView.SWIPE_ALL2;
     int maxRotation = 8;
 
     protected Context mContext;

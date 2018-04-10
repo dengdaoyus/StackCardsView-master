@@ -3,6 +3,7 @@ package com.beyondsw.widget;
 import android.content.Context;
 import android.os.Build;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -84,6 +85,9 @@ public abstract class ImageCardItem extends BaseCardItem {
         iv_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    imageView.setTransitionName(OPTION_IMAGE + currentTab);
+                }
                 onTransitionShrink(ImageCardItem.this, imageView, currentTab);
             }
         });
@@ -93,9 +97,7 @@ public abstract class ImageCardItem extends BaseCardItem {
 
     public void loadAvatar(int currentTab, ImageView imageView) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageView.setTransitionName(OPTION_IMAGE + currentTab);
-        }
+
 //        imageView.setImageResource(avatar[currentTab]);
                 Glide.with(mContext)
                 .load(avatar[currentTab])

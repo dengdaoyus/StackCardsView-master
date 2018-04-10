@@ -52,9 +52,7 @@ public class ImageUrls {
             R.drawable.ic_test_4, R.drawable.ic_test_5,
             R.drawable.ic_test_6
     };
-    public static final Integer[] images4 = {
-            R.drawable.ic_test_0
-    };
+    public static final Integer[] images4= images3;
 
     public static final String[] labels;
 

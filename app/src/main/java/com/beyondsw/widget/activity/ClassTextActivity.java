@@ -76,12 +76,10 @@ public class ClassTextActivity extends AppCompatActivity {
 
 
             //获取方法并设置值
-
             try {
                 Method method = userBeanClass.getMethod("setUserInfo", String.class);
                 try {
                     method.invoke(userBean, "唐诗");
-
                     Log.e("userBean", "获取修改后的昵称   姓名：" + userBean.getNickname());
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();

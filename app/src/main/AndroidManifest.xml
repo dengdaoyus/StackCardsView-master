@@ -12,19 +12,29 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activity.CardFragment"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!--反射练习-->
+        <activity
+            android:name=".activity.ClassTextActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+
         <activity
             android:name=".swipecard.CardSwipeActivity"
             android:screenOrientation="portrait">
-
 
 
         </activity>

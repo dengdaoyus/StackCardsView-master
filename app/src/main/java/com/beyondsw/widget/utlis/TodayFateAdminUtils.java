@@ -14,6 +14,7 @@ public class TodayFateAdminUtils {
 
 
     private static ObjectAnimator animator = null;
+    private static ObjectAnimator valueAnimator = null;
 
     public static void startEndAdmin(View view) {
         if (animator == null) animator = tada(view);
@@ -22,10 +23,16 @@ public class TodayFateAdminUtils {
         animator.start();
     }
 
+
+
     public static void onDestoryAdmin() {
         if (animator != null) {
             animator.cancel();
             animator = null;
+        }
+        if (valueAnimator != null) {
+            valueAnimator.cancel();
+            valueAnimator = null;
         }
     }
 
@@ -52,6 +59,24 @@ public class TodayFateAdminUtils {
 
         return ObjectAnimator.ofPropertyValuesHolder(view, pvhRotate).
                 setDuration(1000);
+    }
+
+
+    public static void startAdmo(View view) {
+        if (valueAnimator == null) valueAnimator = tada2(view);
+        if (valueAnimator.isRunning()) return;
+        valueAnimator.setRepeatCount(0);
+        valueAnimator.setDuration(800);
+        valueAnimator.start();
+    }
+
+    private static ObjectAnimator tada2( View view) {
+        return ObjectAnimator.ofFloat(view, "translationY",
+                0f,
+                -14f,
+                8f,
+                0f
+        );
     }
 
 }

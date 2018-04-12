@@ -37,7 +37,7 @@ public class BindOnClick {
                     @Override
                     public void onClick(View v) {
                         try {
-                            method.invoke(activity,null);
+                            method.invoke(activity,"");
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         } catch (InvocationTargetException e) {

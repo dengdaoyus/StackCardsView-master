@@ -10,7 +10,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
+
         <item name="android:windowEnterTransition">@transition/detail_enter</item>
+        <!-- 进场（Activity进入时）动画 -->
+        <!--<item name="android:windowEnterTransition">@transition/transition_explode</item>-->
+        <!-- 出场（Activity退出时）动画，其实是错误的，下面会改正 -->
+        <!--<item name="android:windowExitTransition">@transition/transition_fade</item>-->
     </style>
 
     <style name="AppTheme.TodayFateDetails">

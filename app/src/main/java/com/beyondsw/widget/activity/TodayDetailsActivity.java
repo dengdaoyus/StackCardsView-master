@@ -8,21 +8,20 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.transition.Transition;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
 import com.beyondsw.widget.R;
-import com.beyondsw.widget.utlis.GlideImageLoader;
 import com.beyondsw.widget.utlis.ImageUrls;
+import com.beyondsw.widget.utlis.TodayFateAdminUtils;
 import com.beyondsw.widget.view.LocalImageHolderView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +43,10 @@ public class TodayDetailsActivity extends AppCompatActivity {
     @BindView(R.id.convenientBanner)
     ConvenientBanner<Integer> convenientBanner;
 
+
+    @BindView(R.id.mFloatingActionButton)
+    FloatingActionButton mFloatingActionButton;
+
     private int mCurrentPosition = 0, mStartPosition = 0;
     private static final String STATE_CURRENT_PAGE_POSITION = "state_current_page_position";
 
@@ -57,20 +60,42 @@ public class TodayDetailsActivity extends AppCompatActivity {
         }
 
         mStartPosition = getIntent().getIntExtra("currentTab", 0);
-        if (savedInstanceState == null) {
-            mCurrentPosition = mStartPosition;
-        } else {
-            mCurrentPosition = savedInstanceState.getInt(STATE_CURRENT_PAGE_POSITION);
-        }
+        mCurrentPosition = mStartPosition;
+
         initData();
         initBanner();
 
-    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getEnterTransition().setInterpolator(new AccelerateInterpolator());
+            getWindow().getEnterTransition().setDuration(100);
+            getWindow().getEnterTransition().addListener(new Transition.TransitionListener() {
+                @Override
+                public void onTransitionStart(Transition transition) {
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_CURRENT_PAGE_POSITION, mCurrentPosition);
+                }
+
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    TodayFateAdminUtils.startAdmo(mFloatingActionButton);
+                }
+
+                @Override
+                public void onTransitionCancel(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionPause(Transition transition) {
+
+                }
+
+                @Override
+                public void onTransitionResume(Transition transition) {
+
+                }
+            });
+        }
+
     }
 
     private void initData() {
@@ -166,14 +191,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
         @Override
         public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
             ImageView mImageView = (ImageView) convenientBanner.getViewPager().getAdapter().instantiateItem(convenientBanner.getViewPager(), mCurrentPosition);
-
-
-            if (convenientBanner.getViewPager().getAdapter().getCount() == 1) {
-                names.clear();
-                names.add(mImageView.getTransitionName());
-                sharedElements.clear();
-                sharedElements.put(mImageView.getTransitionName(), mImageView);
-            } else if (mImageView != null && mStartPosition != mCurrentPosition) {
+            if (mImageView != null && mStartPosition != mCurrentPosition) {
                 names.clear();
                 names.add(mImageView.getTransitionName());
                 sharedElements.clear();
@@ -182,4 +200,9 @@ public class TodayDetailsActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TodayFateAdminUtils.onDestoryAdmin();
+    }
 }

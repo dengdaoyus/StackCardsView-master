@@ -35,7 +35,7 @@ public class IconPageIndicator extends LinearLayout  {
     public void setCurrentCount(int currentCount) {
         removeAllViews();
         for (int i = 0; i < currentCount; i++) {
-            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            LayoutParams params=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             params.leftMargin=8;
             params.rightMargin=8;
             params.weight=1;

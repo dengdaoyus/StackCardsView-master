@@ -1,5 +1,7 @@
 package com.beyondsw.widget.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.os.Build;
@@ -11,9 +13,9 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Transition;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
 import com.beyondsw.widget.R;
@@ -37,65 +39,66 @@ import static com.beyondsw.widget.activity.CardFragment.OPTION_IMAGE;
  */
 
 public class TodayDetailsActivity extends AppCompatActivity {
-    private Handler mHandler = new Handler();
+
     private List<Integer> mList = new ArrayList<>();
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner<Integer> convenientBanner;
 
 
-    @BindView(R.id.mFloatingActionButton)
-    FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.iv_up)
+    ImageView mFloatingActionButton;
 
     private int mCurrentPosition = 0, mStartPosition = 0;
-    private static final String STATE_CURRENT_PAGE_POSITION = "state_current_page_position";
+
+
+
+    public static void start(@NonNull Activity activity, @NonNull ImageView mAvatar, @NonNull ImageView mRow,  int position) {
+        final Intent intent = new Intent(activity, TodayDetailsActivity.class);
+        intent.putExtra("currentTab", position);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            intent.putExtra("rowTransitionName", mRow.getTransitionName());
+            Pair titlePair = Pair.create(mRow, mRow.getTransitionName());
+            Pair iconPair = Pair.create(mAvatar, mAvatar.getTransitionName());
+
+            View decorView = activity.getWindow().getDecorView();
+            View statusBackground = decorView.findViewById(android.R.id.statusBarBackground);
+            View navBackground = decorView.findViewById(android.R.id.navigationBarBackground);
+            Pair statusPair = Pair.create(statusBackground, statusBackground.getTransitionName());
+
+            final ActivityOptions options;
+            if (navBackground == null) {
+                options = ActivityOptions.makeSceneTransitionAnimation(activity,
+                        titlePair, iconPair, statusPair);
+            } else {
+                Pair navPair = Pair.create(navBackground, navBackground.getTransitionName());
+                options = ActivityOptions.makeSceneTransitionAnimation(activity,
+                        titlePair, iconPair, statusPair, navPair);
+            }
+            activity.startActivity(intent, options.toBundle());
+        }else {
+            activity.startActivity(intent);
+        }
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_details);
         ButterKnife.bind(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            postponeEnterTransition();
-        }
-
         mStartPosition = getIntent().getIntExtra("currentTab", 0);
         mCurrentPosition = mStartPosition;
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.e("name","name:222  "+getIntent().getStringExtra("rowTransitionName"));
+            mFloatingActionButton.setTransitionName(getIntent().getStringExtra("rowTransitionName"));
+            postponeEnterTransition();
+//            sharedElementEnterCallback=new SharedElementEnterCallback();
+            setEnterSharedElementCallback(mCallback);
+        }
         initData();
         initBanner();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getEnterTransition().setInterpolator(new AccelerateInterpolator());
-            getWindow().getEnterTransition().setDuration(100);
-            getWindow().getEnterTransition().addListener(new Transition.TransitionListener() {
-                @Override
-                public void onTransitionStart(Transition transition) {
-
-                }
-
-                @Override
-                public void onTransitionEnd(Transition transition) {
-                    TodayFateAdminUtils.startAdmo(mFloatingActionButton);
-                }
-
-                @Override
-                public void onTransitionCancel(Transition transition) {
-
-                }
-
-                @Override
-                public void onTransitionPause(Transition transition) {
-
-                }
-
-                @Override
-                public void onTransitionResume(Transition transition) {
-
-                }
-            });
-        }
-
     }
 
     private void initData() {
@@ -112,17 +115,24 @@ public class TodayDetailsActivity extends AppCompatActivity {
                         return new LocalImageHolderView() {
                             @Override
                             public void loadImage(final ImageView imageView, int position, Integer data) {
-                                imageView.setImageResource(data);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     imageView.setTransitionName(OPTION_IMAGE + position);
+
                                 }
+                                imageView.setImageResource(data);
                                 if (mStartPosition == position) {
-                                    mHandler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setStartPostTransition(imageView);
-                                        }
-                                    }, 200);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                        sharedElementEnterCallback.setView(imageView,mFloatingActionButton);
+                                    }
+                                    new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                    startPostponedEnterTransition();
+                                                }
+                                            }
+                                        },300);
+
                                 }
                             }
                         };
@@ -133,8 +143,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
                 //设置指示器的方向
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
         //设置翻页的效果，不需要翻页效果可用不设
-        //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
-//        convenientBanner.setManualPageable(true);//设置不能手动影响
         convenientBanner.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
         convenientBanner.setCanLoop(false);
         convenientBanner.setcurrentitem(mStartPosition);
@@ -145,17 +153,8 @@ public class TodayDetailsActivity extends AppCompatActivity {
                 mCurrentPosition = position;
             }
         });
-
-
     }
 
-
-    // @TargetApi(21)
-    private void setStartPostTransition(final View sharedView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            startPostponedEnterTransition();
-        convenientBanner.setCanLoop(true);
-    }
 
     @Override
     protected void onStart() {
@@ -176,20 +175,44 @@ public class TodayDetailsActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        setActivityResult();
+        super.onBackPressed();
+    }
+
+    @Override
     public void finishAfterTransition() {
-        stopBanner();
-        setResult(100, new Intent().putExtra("currentTab", mCurrentPosition));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            convenientBanner.setCanLoop(false);
-            setEnterSharedElementCallback(mCallback);
-        }
+        setActivityResult();
         super.finishAfterTransition();
+    }
+
+    private void setActivityResult() {
+        stopBanner();
+        if (mStartPosition == mCurrentPosition) {
+            setResult(RESULT_OK);
+            return;
+        }
+        setResult(RESULT_OK, new Intent().putExtra("currentTab", mCurrentPosition));
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TodayFateAdminUtils.onDestoryAdmin();
     }
 
     private SharedElementCallback mCallback = new SharedElementCallback() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+
             ImageView mImageView = (ImageView) convenientBanner.getViewPager().getAdapter().instantiateItem(convenientBanner.getViewPager(), mCurrentPosition);
             if (mImageView != null && mStartPosition != mCurrentPosition) {
                 names.clear();
@@ -197,12 +220,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
                 sharedElements.clear();
                 sharedElements.put(mImageView.getTransitionName(), mImageView);
             }
+
         }
     };
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        TodayFateAdminUtils.onDestoryAdmin();
-    }
 }

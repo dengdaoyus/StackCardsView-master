@@ -3,6 +3,7 @@ package com.beyondsw.widget;
 import android.content.Context;
 import android.os.Build;
 
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,12 @@ import static com.beyondsw.widget.activity.CardFragment.OPTION_IMAGE;
 public abstract class ImageCardItem extends BaseCardItem {
     private Integer[] avatar;
     private int currentTab = 0;
+    private int prosion = 0;
 
-    public ImageCardItem(Context context, Integer[] avatar) {
+    public ImageCardItem(Context context, Integer[] avatar, int i) {
         super(context);
         this.avatar = avatar;
+        this.prosion=i;
     }
 
     public static class ViewHolder {
@@ -36,7 +39,6 @@ public abstract class ImageCardItem extends BaseCardItem {
     public View getView(View convertView, ViewGroup parent) {
         convertView = View.inflate(mContext, R.layout.item_imagecard, null);
         imageView = convertView.findViewById(R.id.image);
-//        imageView.setCurrRound(7);
         iconPageIndicator = convertView.findViewById(R.id.iconPageIndicator);
         iconPageIndicator.setCurrentCount(avatar.length);
         iconPageIndicator.setCurrentItem(currentTab);
@@ -48,7 +50,7 @@ public abstract class ImageCardItem extends BaseCardItem {
         View viewRight = convertView.findViewById(R.id.viewRight);
 
         ImageView iv_up = convertView.findViewById(R.id.iv_up);
-
+        final ImageView iv_row = convertView.findViewById(R.id.iv_up);
         ViewHolder vh = new ViewHolder();
         vh.left = left;
         vh.right = right;
@@ -87,8 +89,9 @@ public abstract class ImageCardItem extends BaseCardItem {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     imageView.setTransitionName(OPTION_IMAGE + currentTab);
+                    iv_row.setTransitionName(OPTION_IMAGE +"row"+ prosion);
                 }
-                onTransitionShrink(ImageCardItem.this, imageView, currentTab);
+                onTransitionShrink(ImageCardItem.this, imageView,iv_row, currentTab);
             }
         });
         return convertView;
@@ -96,14 +99,12 @@ public abstract class ImageCardItem extends BaseCardItem {
 
 
     public void loadAvatar(int currentTab, ImageView imageView) {
-
-
-//        imageView.setImageResource(avatar[currentTab]);
-                Glide.with(mContext)
-                .load(avatar[currentTab])
-                .placeholder(R.drawable.img_dft)
-                .centerCrop()
-                .into(imageView);
+        imageView.setImageResource(avatar[currentTab]);
+//                Glide.with(mContext)
+//                .load(avatar[currentTab])
+//                .placeholder(R.drawable.img_dft)
+//                .centerCrop()
+//                .into(imageView);
     }
 
     public void setCurrentTab(int currentTab) {
@@ -117,5 +118,5 @@ public abstract class ImageCardItem extends BaseCardItem {
     public abstract void onEndAnim();
 
     //转场收缩
-    public abstract void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, int currentTab);
+    public abstract void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, ImageView row, int currentTab);
 }

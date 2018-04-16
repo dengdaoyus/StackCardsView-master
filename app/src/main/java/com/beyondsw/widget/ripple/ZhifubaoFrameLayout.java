@@ -25,7 +25,7 @@ public class ZhifubaoFrameLayout extends FrameLayout {
     private Paint paint;
     private AnimatorSet animatorSet;
     private ArrayList<Animator> animatorList;
-    private FrameLayout.LayoutParams rippleParams;
+    private LayoutParams rippleParams;
     private ArrayList<WateRipple> rippleViewList= new ArrayList<>();
     private boolean isAnimRunning = false;
     public ZhifubaoFrameLayout(Context context) {
@@ -75,7 +75,7 @@ public class ZhifubaoFrameLayout extends FrameLayout {
     private void addChildView() {
         radius = 52;
         animDelay=500;
-        rippleParams=new FrameLayout.LayoutParams(2*(radius), 2*(radius));
+        rippleParams=new LayoutParams(2*(radius), 2*(radius));
         rippleParams.gravity = Gravity.CENTER;
         for(int i=0;i<water_ripple_count;i++){//几个水波纹
             WateRipple rippleView=new WateRipple(getContext(),paint);

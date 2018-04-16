@@ -26,32 +26,21 @@
         <!--反射练习-->
         <activity
             android:name=".activity.ClassTextActivity"
-            android:screenOrientation="portrait">
-
-
-        </activity>
-
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".swipecard.CardSwipeActivity"
-            android:screenOrientation="portrait">
-
-
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.RippleSpreadTestActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.TodayDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Detail" />
 
 
-        <activity android:name="uitransition.MainActivity">
-
-        </activity>
+        <activity android:name="uitransition.MainActivity"/>
 
         <activity
             android:name="uitransition.ui_trasition.ImageActivity"
@@ -61,16 +50,15 @@
             android:theme="@style/AppTheme.Detail" />
 
         <activity android:name="uitransition.manual_transition.AnimeActivity" />
+
         <activity
             android:name="uitransition.manual_transition.AnimeDetailActivity"
             android:theme="@style/AppTheme.AnimeDetail" />
 
         <activity
             android:name="uitransition.TestActivity"
-            android:theme="@style/AppTheme.TodayFateDetails">
+            android:theme="@style/AppTheme.TodayFateDetails"/>
 
-
-        </activity>
     </application>
 
 </manifest>

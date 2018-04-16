@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--<explode android:duration="500" android:interpolator="@android:interpolator/accelerate_decelerate" />-->
+    <transitionSet>
+        <slide android:slideEdge="bottom">
+            <targets>
+                <target android:targetId="@id/cardview" />
+            </targets>
+        </slide>
+        <fade>
+            <targets>
+                <target android:excludeId="@android:id/statusBarBackground" />
+                <target android:excludeId="@android:id/navigationBarBackground" />
+                <target android:excludeId="@id/cardview" />
 
-    <slide android:slideEdge="bottom">
-        <targets>
-            <target android:targetId="@id/cardview"/>
-        </targets>
-    </slide>
+            </targets>
+        </fade>
 
-    <fade>
-        <targets>
-            <target android:excludeId="@android:id/statusBarBackground"/>
-            <target android:excludeId="@android:id/navigationBarBackground"/>
-            <target android:excludeId="@id/cardview"/>
-        </targets>
-    </fade>
+    </transitionSet>
+
+
+
+
 </transitionSet>

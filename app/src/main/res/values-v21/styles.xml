@@ -10,12 +10,24 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
-
         <item name="android:windowEnterTransition">@transition/detail_enter</item>
-        <!-- 进场（Activity进入时）动画 -->
-        <!--<item name="android:windowEnterTransition">@transition/transition_explode</item>-->
-        <!-- 出场（Activity退出时）动画，其实是错误的，下面会改正 -->
-        <!--<item name="android:windowExitTransition">@transition/transition_fade</item>-->
+        <!--<item name="android:windowExitTransition">@android:transition/no_transition</item>-->
+
+
+        <!--android:windowContentTransitions                允许使用transitions-->
+        <!--android:windowAllowEnterTransitionOverlap       是否覆盖执行，其实可以理解成前后两个页面是同步执行还是顺序执行-->
+        <!--android:windowAllowReturnTransitionOverlap      与上面相同。即上一个设置了退出动画，这个设置了进入动画，两者是否同时执行。-->
+        <!--android:windowContentTransitionManager          引用TransitionManager XML资源，定义不同窗口内容之间的所需转换。-->
+        <!--android:windowEnterTransition                   首次进入显示的动画-->
+        <!--android:windowExitTransition                    启动新 Activity ，此页面退出的动画-->
+        <!--android:windowReenterTransition                 重新进入的动画。即第二次进入，可以和首次进入不一样。-->
+        <!--android:windowReturnTransition                  调用 finishAfterTransition() 退出时，此页面退出的动画-->
+        <!--android:windowSharedElementsUseOverlay          指示共享元素在转换期间是否应使用叠加层。-->
+        <!--android:windowSharedElementEnterTransition      首次进入显示的动画-->
+        <!--android:windowSharedElementExitTransition       启动新 Activity ，此页面退出的动画-->
+        <!--android:windowSharedElementReenterTransition    重新进入的动画。即第二次进入，可以和首次进入不一样。-->
+        <!--android:windowSharedElementReturnTransition     调用 finishAfterTransition() 退出时，此页面退出的动画-->
+
     </style>
 
     <style name="AppTheme.TodayFateDetails">

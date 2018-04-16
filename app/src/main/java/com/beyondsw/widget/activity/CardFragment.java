@@ -9,11 +9,14 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.beyondsw.lib.widget.StackCardsView;
@@ -205,20 +208,22 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     private ImageView mImageView = null;
 
     private List<BaseCardItem> loadData(int startIndex) {
-        if (startIndex < ImageUrls.images3.length) {
             List<BaseCardItem> result= new ArrayList<>();
-            for (int i = startIndex; i < PAGE_COUNT; i++) {
-                ImageCardItem item = new ImageCardItem(this, ImageUrls.images4) {
+            for (int i = startIndex; i < ImageUrls.images4.length; i++) {
+                ImageCardItem item = new ImageCardItem(this, ImageUrls.images4,i) {
                     @Override
                     public void onEndAnim() {
                         TodayFateAdminUtils.startEndAdmin(mCardsView);
                     }
 
                     @Override
-                    public void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, int currentTab) {
+                    public void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, ImageView row, int currentTab) {
                         mImageCardItem = imageCardItem;
                         mImageView = view;
-                        startTransitionShrink(view, currentTab);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Log.e("name","name111  :"+row.getTransitionName());
+                        }
+                        startTransitionShrink(view, row,currentTab);
                     }
 
                 };
@@ -227,8 +232,6 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
                 result.add(item);
             }
             return result;
-        }
-        return null;
     }
 
 
@@ -236,24 +239,14 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
 
 
     @SuppressLint("RestrictedApi")
-    private void startTransitionShrink(View transitionView, int currentTab) {
-        Intent intent = new Intent(this, TodayDetailsActivity.class);
-        intent.putExtra("currentTab", currentTab);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // 这里指定了共享的视图元素
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, transitionView, transitionView.getTransitionName());
-            ActivityCompat.startActivityForResult(this,intent, 100, options.toBundle());
-//            setCallback(currentTab);
-        } else {
-            startActivity(intent);
-        }
+    private void startTransitionShrink(ImageView transitionView,ImageView row, int currentTab) {
+            TodayDetailsActivity.start(this,transitionView,row,currentTab);
     }
-
 
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
-        if (resultCode == 100) {
+        if (resultCode == RESULT_OK) {
             if (mImageCardItem != null && data != null) {
                 exitPosition = data.getIntExtra("currentTab", enterPosition);
                 if (exitPosition != -1) {
@@ -262,7 +255,6 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
                 }
             }
         }
-
     }
 
     private int exitPosition;
@@ -274,14 +266,22 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setExitSharedElementCallback(new SharedElementCallback() {
                 // @Override
-                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                public void onMapSharedElements(List<String> names, final Map<String, View> sharedElements) {
                     //if (exitPosition != enterPosition && names.size() > 0 && exitPosition < mImageCardItem.getCount()) {
                         names.clear();
                         sharedElements.clear();
                         if(mImageView!=null){
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 names.add(mImageView.getTransitionName());
-                                sharedElements.put(mImageView.getTransitionName(), mImageView);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                            sharedElements.put(mImageView.getTransitionName(), mImageView);
+                                        }
+                                    }
+                                },300);
+
                             }
                         }
                   //  }

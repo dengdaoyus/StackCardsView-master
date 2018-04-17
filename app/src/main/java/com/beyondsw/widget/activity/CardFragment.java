@@ -9,22 +9,17 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.beyondsw.lib.widget.StackCardsView;
 import com.beyondsw.widget.BaseCardItem;
 import com.beyondsw.widget.CardAdapter;
 import com.beyondsw.widget.ImageCardItem;
-import com.beyondsw.widget.utlis.ImageUrls;
 import com.beyondsw.widget.R;
+import com.beyondsw.widget.utlis.ImageUrls;
 import com.beyondsw.widget.utlis.TodayFateAdminUtils;
 
 import java.util.ArrayList;
@@ -37,7 +32,7 @@ import uitransition.MainActivity;
  * Created by
  */
 public class CardFragment extends AppCompatActivity implements Handler.Callback, StackCardsView.OnCardSwipedListener
-        , View.OnClickListener {
+        , View.OnClickListener, ImageCardItem.ImageCardCallBack {
     private StackCardsView mCardsView;
     private CardAdapter mAdapter;
     private HandlerThread mWorkThread;
@@ -45,7 +40,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     private Handler mMainHandler;
     private static final int MSG_START_LOAD_DATA = 1;
     private static final int MSG_DATA_LOAD_DONE = 2;
-    private volatile int mStartIndex=0;
+    private volatile int mStartIndex = 0;
     private static final int PAGE_COUNT = 5;
 
     private ImageView iv_dislike;
@@ -56,6 +51,9 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taday_fate);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            setExitSharedElementCallback(mCallback);
+        }
         initView();
     }
 
@@ -113,20 +111,19 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
         mAdapter.remove(0);
         switch (direction) {
             case StackCardsView.SWIPE_LEFT:
-                Log.e("onCardDismiss","SWIPE_LEFT");
+                Log.e("onCardDismiss", "SWIPE_LEFT");
                 TodayFateAdminUtils.startEndAdmin(iv_dislike);
                 break;
             case StackCardsView.SWIPE_RIGHT:
-                Log.e("onCardDismiss","SWIPE_RIGHT");
+                Log.e("onCardDismiss", "SWIPE_RIGHT");
                 TodayFateAdminUtils.startEndAdmin(iv_like);
                 break;
             case StackCardsView.SWIPE_UP:
-                Log.e("onCardDismiss","SWIPE_UP");
+                Log.e("onCardDismiss", "SWIPE_UP");
                 TodayFateAdminUtils.startEndAdmin(iv_follow);
                 break;
             case StackCardsView.SWIPE_DOWN:
-                Log.e("onCardDismiss","SWIPE_DOWN");
-//                TodayFateAdminUtils.startEndAdmin(iv_dislike);
+                Log.e("onCardDismiss", "SWIPE_DOWN");
                 break;
         }
     }
@@ -208,30 +205,14 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     private ImageView mImageView = null;
 
     private List<BaseCardItem> loadData(int startIndex) {
-            List<BaseCardItem> result= new ArrayList<>();
-            for (int i = startIndex; i < ImageUrls.images4.length; i++) {
-                ImageCardItem item = new ImageCardItem(this, ImageUrls.images4,i) {
-                    @Override
-                    public void onEndAnim() {
-                        TodayFateAdminUtils.startEndAdmin(mCardsView);
-                    }
-
-                    @Override
-                    public void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, ImageView row, int currentTab) {
-                        mImageCardItem = imageCardItem;
-                        mImageView = view;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Log.e("name","name111  :"+row.getTransitionName());
-                        }
-                        startTransitionShrink(view, row,currentTab);
-                    }
-
-                };
-                item.dismissDir = StackCardsView.SWIPE_ALL2;
-                item.fastDismissAllowed = true;
-                result.add(item);
-            }
-            return result;
+        List<BaseCardItem> result = new ArrayList<>();
+        for (int i = startIndex; i < ImageUrls.images4.length; i++) {
+            ImageCardItem item = new ImageCardItem(this, ImageUrls.images4, i, this);
+            item.dismissDir = StackCardsView.SWIPE_ALL2;
+            item.fastDismissAllowed = false;
+            result.add(item);
+        }
+        return result;
     }
 
 
@@ -239,58 +220,65 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
 
 
     @SuppressLint("RestrictedApi")
-    private void startTransitionShrink(ImageView transitionView,ImageView row, int currentTab) {
-            TodayDetailsActivity.start(this,transitionView,row,currentTab);
+    private void startTransitionShrink(ImageView transitionView, ImageView row, int currentTab) {
+        TodayDetailsActivity.start(this, transitionView, row, currentTab);
     }
 
+    int startingPosition;
+    int currentPosition;
+
     @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (mImageCardItem != null && data != null) {
-                exitPosition = data.getIntExtra("currentTab", enterPosition);
-                if (exitPosition != -1) {
-                    mImageCardItem.loadAvatar(exitPosition, mImageView);
-                    mImageCardItem.setCurrentTab(exitPosition);
+    public void onActivityReenter(int requestCode, Intent data) {
+        super.onActivityReenter(requestCode, data);
+        Bundle mTmpReenterState = data.getExtras();
+        startingPosition = mTmpReenterState.getInt("startingPosition");
+        currentPosition = mTmpReenterState.getInt("currentPosition");
+        if (startingPosition != currentPosition && mImageCardItem != null) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                postponeEnterTransition();
+//            }
+            mImageCardItem.setCurrentTab(currentPosition);
+            mImageCardItem.loadAvatar2(currentPosition, mImageView);
+        }
+    }
+
+
+    private final SharedElementCallback mCallback = new SharedElementCallback() {
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            if (startingPosition != currentPosition && mImageView != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    names.clear();
+                    names.add(OPTION_IMAGE+currentPosition);
+                    sharedElements.clear();
+                    sharedElements.put(OPTION_IMAGE+currentPosition, mImageView);
+
                 }
             }
         }
+    };
+
+
+    @Override
+    public void onEndAnim() {
+        TodayFateAdminUtils.startEndAdmin(mCardsView);
     }
 
-    private int exitPosition;
-    private int enterPosition;
-
-    // @TargetApi(21)
-    private void setCallback(final int enterPosition) {
-        this.enterPosition = enterPosition;
+    @Override
+    public void onTransitionShrink(ImageCardItem imageCardItem, ImageView view, ImageView row, int startCurrentTab) {
+        mImageCardItem = imageCardItem;
+        mImageView = view;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setExitSharedElementCallback(new SharedElementCallback() {
-                // @Override
-                public void onMapSharedElements(List<String> names, final Map<String, View> sharedElements) {
-                    //if (exitPosition != enterPosition && names.size() > 0 && exitPosition < mImageCardItem.getCount()) {
-                        names.clear();
-                        sharedElements.clear();
-                        if(mImageView!=null){
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                names.add(mImageView.getTransitionName());
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                            sharedElements.put(mImageView.getTransitionName(), mImageView);
-                                        }
-                                    }
-                                },300);
+            Log.e("name", "name0:  " + mImageView.getTransitionName());
+        }
+        startTransitionShrink(view, row, startCurrentTab);
+    }
 
-                            }
-                        }
-                  //  }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        setExitSharedElementCallback((SharedElementCallback) null);
-                    }
-
-                }
-            });
+    @Override
+    public void onStartPostponedEnterTransition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startPostponedEnterTransition();
         }
     }
+
 }

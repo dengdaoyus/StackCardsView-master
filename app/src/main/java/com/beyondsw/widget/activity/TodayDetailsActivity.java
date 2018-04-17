@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -44,38 +43,22 @@ public class TodayDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner<Integer> convenientBanner;
-
-
     @BindView(R.id.iv_up)
     ImageView mFloatingActionButton;
 
     private int mCurrentPosition = 0, mStartPosition = 0;
 
 
-
     public static void start(@NonNull Activity activity, @NonNull ImageView mAvatar, @NonNull ImageView mRow,  int position) {
         final Intent intent = new Intent(activity, TodayDetailsActivity.class);
-        intent.putExtra("currentTab", position);
+        intent.putExtra("startingPosition", position);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             intent.putExtra("rowTransitionName", mRow.getTransitionName());
             Pair titlePair = Pair.create(mRow, mRow.getTransitionName());
             Pair iconPair = Pair.create(mAvatar, mAvatar.getTransitionName());
-
-            View decorView = activity.getWindow().getDecorView();
-            View statusBackground = decorView.findViewById(android.R.id.statusBarBackground);
-            View navBackground = decorView.findViewById(android.R.id.navigationBarBackground);
-            Pair statusPair = Pair.create(statusBackground, statusBackground.getTransitionName());
-
-            final ActivityOptions options;
-            if (navBackground == null) {
-                options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                        titlePair, iconPair, statusPair);
-            } else {
-                Pair navPair = Pair.create(navBackground, navBackground.getTransitionName());
-                options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                        titlePair, iconPair, statusPair, navPair);
-            }
+            final ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
+                        titlePair, iconPair);
             activity.startActivity(intent, options.toBundle());
         }else {
             activity.startActivity(intent);
@@ -88,13 +71,11 @@ public class TodayDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_details);
         ButterKnife.bind(this);
-        mStartPosition = getIntent().getIntExtra("currentTab", 0);
+        mStartPosition = getIntent().getIntExtra("startingPosition", 0);
         mCurrentPosition = mStartPosition;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Log.e("name","name:222  "+getIntent().getStringExtra("rowTransitionName"));
             mFloatingActionButton.setTransitionName(getIntent().getStringExtra("rowTransitionName"));
             postponeEnterTransition();
-//            sharedElementEnterCallback=new SharedElementEnterCallback();
             setEnterSharedElementCallback(mCallback);
         }
         initData();
@@ -121,9 +102,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
                                 }
                                 imageView.setImageResource(data);
                                 if (mStartPosition == position) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                                        sharedElementEnterCallback.setView(imageView,mFloatingActionButton);
-                                    }
                                     new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
@@ -151,6 +129,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 mCurrentPosition = position;
+                Log.e("name", "mCurrentPosition   :  " +mCurrentPosition);
             }
         });
     }
@@ -177,13 +156,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        setActivityResult();
-        super.onBackPressed();
     }
 
     @Override
@@ -194,11 +166,9 @@ public class TodayDetailsActivity extends AppCompatActivity {
 
     private void setActivityResult() {
         stopBanner();
-        if (mStartPosition == mCurrentPosition) {
-            setResult(RESULT_OK);
-            return;
-        }
-        setResult(RESULT_OK, new Intent().putExtra("currentTab", mCurrentPosition));
+
+        Log.e("name", "setActivityResult   :  mStartPosition  " +mStartPosition +"    mCurrentPosition   "+mCurrentPosition);
+        setResult(RESULT_OK, new Intent().putExtra("startingPosition", mStartPosition).putExtra("currentPosition", mCurrentPosition));
     }
 
 
@@ -212,7 +182,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-
             ImageView mImageView = (ImageView) convenientBanner.getViewPager().getAdapter().instantiateItem(convenientBanner.getViewPager(), mCurrentPosition);
             if (mImageView != null && mStartPosition != mCurrentPosition) {
                 names.clear();
@@ -220,7 +189,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
                 sharedElements.clear();
                 sharedElements.put(mImageView.getTransitionName(), mImageView);
             }
-
         }
     };
 }

@@ -12,9 +12,15 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.beyondsw.widget.R;
@@ -49,7 +55,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
     private int mCurrentPosition = 0, mStartPosition = 0;
 
 
-    public static void start(@NonNull Activity activity, @NonNull ImageView mAvatar, @NonNull ImageView mRow,  int position) {
+    public static void start(@NonNull Activity activity, @NonNull ImageView mAvatar, @NonNull ImageView mRow, int position) {
         final Intent intent = new Intent(activity, TodayDetailsActivity.class);
         intent.putExtra("startingPosition", position);
 
@@ -57,10 +63,27 @@ public class TodayDetailsActivity extends AppCompatActivity {
             intent.putExtra("rowTransitionName", mRow.getTransitionName());
             Pair titlePair = Pair.create(mRow, mRow.getTransitionName());
             Pair iconPair = Pair.create(mAvatar, mAvatar.getTransitionName());
+
+
+//            View decorView = activity.getWindow().getDecorView();
+//            View statusBackground = decorView.findViewById(android.R.id.statusBarBackground);
+//            View navBackground = decorView.findViewById(android.R.id.navigationBarBackground);
+//            Pair statusPair = Pair.create(statusBackground, statusBackground.getTransitionName());
+//
+//            final ActivityOptions options;
+//            if (navBackground == null) {
+//                options = ActivityOptions.makeSceneTransitionAnimation(activity,
+//                        titlePair, iconPair, statusPair);
+//            } else {
+//                Pair navPair = Pair.create(navBackground, navBackground.getTransitionName());
+//                options = ActivityOptions.makeSceneTransitionAnimation(activity,
+//                        titlePair, iconPair, statusPair, navPair);
+//            }
+
             final ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                        titlePair, iconPair);
+                    titlePair, iconPair);
             activity.startActivity(intent, options.toBundle());
-        }else {
+        } else {
             activity.startActivity(intent);
         }
     }
@@ -71,6 +94,21 @@ public class TodayDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_details);
         ButterKnife.bind(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            TransitionSet transitions = new TransitionSet();
+//            Slide slide = new Slide(Gravity.TOP);
+//            slide.setStartDelay(0);
+//            slide.setInterpolator(AnimationUtils.loadInterpolator(this,
+//                    android.R.interpolator.linear_out_slow_in));
+//            slide.setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+//            transitions.addTransition(slide);
+//            transitions.addTransition(new Fade());
+//            getWindow().setEnterTransition(transitions);
+            getWindow().setEnterTransition(new TransitionSet().setDuration(600).setStartDelay(200));
+            getWindow().setExitTransition(new TransitionSet().setDuration(600).setStartDelay(200));
+        }
+
+
         mStartPosition = getIntent().getIntExtra("startingPosition", 0);
         mCurrentPosition = mStartPosition;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -103,13 +141,13 @@ public class TodayDetailsActivity extends AppCompatActivity {
                                 imageView.setImageResource(data);
                                 if (mStartPosition == position) {
                                     new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                                    startPostponedEnterTransition();
-                                                }
+                                        @Override
+                                        public void run() {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                startPostponedEnterTransition();
                                             }
-                                        },300);
+                                        }
+                                    }, 300);
 
                                 }
                             }
@@ -129,7 +167,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 mCurrentPosition = position;
-                Log.e("name", "mCurrentPosition   :  " +mCurrentPosition);
+                Log.e("name", "mCurrentPosition   :  " + mCurrentPosition);
             }
         });
     }
@@ -167,7 +205,7 @@ public class TodayDetailsActivity extends AppCompatActivity {
     private void setActivityResult() {
         stopBanner();
 
-        Log.e("name", "setActivityResult   :  mStartPosition  " +mStartPosition +"    mCurrentPosition   "+mCurrentPosition);
+        Log.e("name", "setActivityResult   :  mStartPosition  " + mStartPosition + "    mCurrentPosition   " + mCurrentPosition);
         setResult(RESULT_OK, new Intent().putExtra("startingPosition", mStartPosition).putExtra("currentPosition", mCurrentPosition));
     }
 

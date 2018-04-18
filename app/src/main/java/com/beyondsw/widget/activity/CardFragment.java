@@ -51,10 +51,10 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taday_fate);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            setExitSharedElementCallback(mCallback);
-        }
         initView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setExitSharedElementCallback(mCallback);
+        }
     }
 
     private void initView() {
@@ -237,6 +237,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                postponeEnterTransition();
 //            }
+
             mImageCardItem.setCurrentTab(currentPosition);
             mImageCardItem.loadAvatar2(currentPosition, mImageView);
         }
@@ -248,11 +249,10 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
         public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
             if (startingPosition != currentPosition && mImageView != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    names.clear();
-                    names.add(OPTION_IMAGE+currentPosition);
-                    sharedElements.clear();
-                    sharedElements.put(OPTION_IMAGE+currentPosition, mImageView);
-
+//                    names.clear();
+//                    names.add(OPTION_IMAGE+currentPosition);
+//                    sharedElements.clear();
+//                    sharedElements.put(OPTION_IMAGE+currentPosition, mImageView);
                 }
             }
         }
@@ -277,7 +277,7 @@ public class CardFragment extends AppCompatActivity implements Handler.Callback,
     @Override
     public void onStartPostponedEnterTransition() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startPostponedEnterTransition();
+//            startPostponedEnterTransition();
         }
     }
 

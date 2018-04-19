@@ -16,31 +16,27 @@
         <activity
             android:name=".activity.CardFragment"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!--反射练习-->
         <activity
             android:name=".activity.ClassTextActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".swipecard.CardSwipeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RippleSpreadTestActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TodayDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Detail" />
 
 
-        <activity android:name="uitransition.MainActivity"/>
+        <activity android:name="uitransition.MainActivity" />
 
         <activity
             android:name="uitransition.ui_trasition.ImageActivity"
@@ -57,7 +53,18 @@
 
         <activity
             android:name="uitransition.TestActivity"
-            android:theme="@style/AppTheme.TodayFateDetails"/>
+            android:theme="@style/AppTheme.TodayFateDetails" />
+
+        <activity
+            android:name=".activity.DialogListViewActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
     </application>
 

@@ -95,15 +95,6 @@ public class TodayDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_today_details);
         ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            TransitionSet transitions = new TransitionSet();
-//            Slide slide = new Slide(Gravity.TOP);
-//            slide.setStartDelay(0);
-//            slide.setInterpolator(AnimationUtils.loadInterpolator(this,
-//                    android.R.interpolator.linear_out_slow_in));
-//            slide.setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
-//            transitions.addTransition(slide);
-//            transitions.addTransition(new Fade());
-//            getWindow().setEnterTransition(transitions);
             getWindow().setEnterTransition(new TransitionSet().setDuration(600).setStartDelay(200));
             getWindow().setExitTransition(new TransitionSet().setDuration(600).setStartDelay(200));
         }
